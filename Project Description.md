@@ -1,6 +1,6 @@
 #### Project team (*Design study*)
 >- **Xue Zou**
->- **Yunchao Liu** (gitub id: *LanceKnigth*)
+>- **Yunchao Liu** (gitub id: *LanceKnight*)
 
 #### Project description 
 
