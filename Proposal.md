@@ -8,45 +8,45 @@
 
 **2. link to Github**
 
-- https://github.com/xuezzou/Vis-Project-fall-2018/blob/master/Project%20Description.md
+- https://github.com/xuezzou/Vis-Project-fall-2018/tree/master
 
 ---
-#### Background and Motivation:
+### Background and Motivation:
 
 Whether aliens exist or not has been a lasting debate topic. People from all over the world claimed to spot UFO under various conditions. This dataset contains data of UFO sightseeing reports and is fun to explore since not many conclusions have been drawn in regard of UFO. Hopfully we can discover some interesting facts from the data. Moreover, since this is geospatial data, what we have learnt in class can also play a role in this project.
 
 ---
-#### Objectives: 
+### Objectives: 
 
 We hope to find some interesting facts about UFO signtseeing. By visualizing where and when reports are filed, we hope to make a model for a trend or pattern for UFO sightseeing.  
 
 We intend to learn how to effetively and expressively present geospatial data and draw conclusions from the visual presentation of data.
 
 ---
-#### Data: 
+### Data: 
 
 Our data is from Kaggle
 
 (link to the dataset: ****)
 
 ---
-#### Data Processing: 
+### Data Processing: 
 
 We decide to work only on U.S data so we need to filt out non-US data. We plan to spend 3 days on data cleanup.
 
 ---
-#### Must-Have Features: 
+### Must-Have Features: 
 
 1. map that shows where reports
 2. (more based on the design)
 
 ---
-#### Optional Features: 
+### Optional Features: 
 
 1. zooming for the map
 2. (more based on the design)
 ---
-#### Project Schedule: 
+### Project Schedule: 
 - **Nov 5 - 7:** Proposal
 - **Nov 7:** Proposal Submission
 - **Nov 8 - 11:** Data Cleanup
@@ -59,6 +59,6 @@ We decide to work only on U.S data so we need to filt out non-US data. We plan t
 - **Dec 7:** Presentation, Final Project Submission
 
 ---
-#### Visualization Design: 
+### Visualization Design: 
 
 (Will add after design)
