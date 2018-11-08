@@ -1,9 +1,11 @@
 import csv
-with open("scrubbed.csv") as infile, open ("cleaned.csv", "w") as outfile:
+with open("scrubbed.csv") as infile, open ("ufo_data_cleaned.csv", "w") as outfile:
 	reader = csv.reader(infile, delimiter=",")
 	next(reader,None)	
-	writer = csv.writer(outfile, delimiter=' ')#, quotechar="", quoting=csv.QUOTE_ALL)
+	writer = csv.writer(outfile, delimiter=',')#, quotechar="", quoting=csv.QUOTE_ALL)
 	
+	writer.writerow(["year", "state", "country", "shape", "duration", "latitude", "longtitude"])
+
 	for line in reader:
 
 		record_it = True
