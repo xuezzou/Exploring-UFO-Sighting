@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset='utf-8'>
+		<title>Final Project UFO sightseeing in the U.S visualization</title>
+		<script type='text/javascript' src='webpage/d3.js'></script>
+	</head>
+	<body>
+	
+	<script type='text/javascript' src='webpage/uStates.js'></script>
+	<script type='text/javascript' src='webpage/ufo_visualizations.js'></script>
+	<script type='text/javascript'>
+		d3.csv('data/cleaned.csv')
+		  .then(function(data)  {
+			  ufo_data = data;
+           /*ufo_data.forEach(function(d)  {
+              console.log(d)
+              
+           });
+				*/
+
+
+			  plot_it();
+		  })
+		
+	</script>
+	</body>
+</html>
