@@ -5,33 +5,63 @@ References:
 
 */
 
-function plot_it()  {
-		width = 2000
-		height = 1000
-		padding = 30
-		opacity = 0.1
+function plot_it() {
+    width = 2000;
+    height = 1000;
+    padding = 30;
+    opacity = 0.1;
 
-		map_width = 960
-		map_height = 600	
+    map_width = 960;
+    map_height = 600;
 
-		sub_info_width = 200
-		sub_info_height = 200		
+    sub_info_width = 200;
+    sub_info_height = 200;
 
-		d3.selectAll('body').append('svg').attr('width', width).attr('height', height)
-//add map section
-		d3.select('svg').append('g').attr('id','map_plot').attr('transform',"translate("+padding+","+padding+")")
-		d3.selectAll('#map_plot').selectAll(".state")
-			.data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(d){ return d.d;})
-//			.style("fill",function(d){ return data[d.id].color; })
+    // aggregate the data
+    // the length of the values is the count
+    let aggregatedByState = d3.nest().key(function (d) {
+        return d.state;
+    }).entries(ufo_data);
 
-//add info section
-		d3.selectAll('svg').append('g').attr('id','info_plot').attr('transform',"translate("+(map_width+padding)+","+padding+")")
-		d3.selectAll('#info_plot').append('g').attr('id','subplot1').attr('transform',"translate("+padding+","+padding+")")
-		d3.selectAll('#subplot1').append('rect').attr('x',0).attr('y',0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill','blue').attr('opacity', opacity)
+    d3.selectAll('body').append('svg').attr('width', width).attr('height', height)
+    //add map section
+    d3.select('svg').append('g').attr('id', 'map_plot').attr('transform', "translate(" + padding + "," + padding + ")")
+    let states = d3.selectAll('#map_plot').selectAll(".state")
+        .data(uStatePaths).enter().append("path").attr("class", "state").attr("d", function (d) {
+        return d.d;
+    }).style("fill", function (d) {
+            let element = aggregatedByState.find(function (element) {
+                return element.key == d.id.toLowerCase()
+            });
+            let coef = 0;
+            if (element) {
+                coef = element.values.length;
+            }
+            return d3.interpolate("#ffffcc", "#800026")(coef / 4000);
+        }
+    );
 
-		d3.selectAll('#info_plot').append('g').attr('id','subplot2').attr('transform',"translate("+padding+","+(sub_info_height+2*padding)+")")
-		d3.selectAll('#subplot2').append('rect').attr('x',0).attr('y',0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill','blue').attr('opacity', opacity)
+    states.on("click", function(d) {
+        // change style
+        console.log(d);
+    });
 
-		d3.selectAll('#info_plot').append('g').attr('id','subplot3').attr('transform',"translate("+padding+","+(2*sub_info_height+3*padding)+")")
-		d3.selectAll('#subplot3').append('rect').attr('x',0).attr('y',0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill','blue').attr('opacity', opacity)
+    // hover
+
+
+
+    //add info section
+    d3.selectAll('svg').append('g').attr('id', 'info_plot').attr('transform', "translate(" + (map_width + padding) + "," + padding + ")")
+    d3.selectAll('#info_plot').append('g').attr('id', 'subplot1').attr('transform', "translate(" + padding + "," + padding + ")")
+    d3.selectAll('#subplot1').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
+
+    d3.selectAll('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + 2 * padding) + ")")
+    d3.selectAll('#subplot2').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
+
+    d3.selectAll('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 3 * padding) + ")")
+    d3.selectAll('#subplot3').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
+
+
+
 }
+
