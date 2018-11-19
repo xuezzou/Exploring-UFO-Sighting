@@ -1,8 +1,10 @@
 /*
 References:
 1. d3 map: http://bl.ocks.org/michellechandra/0b2ce4923dc9b5809922
+2. https://bl.ocks.org/mbostock/4090848
+3. https://gist.github.com/NPashaP/a74faf20b492ad377312
 
-
+special thanks to Prof. Matthew Berger for strong technical supports
 */
 
 
@@ -24,17 +26,21 @@ function plot_it() {
         return d.state;
     }).entries(ufo_data);
 
-    console.log(aggregatedByState);
 
     d3.selectAll('body').append('svg').attr('width', width).attr('height', height)
     //add map section
+    //map_data.features = map_data.features.filter(d => d.properties.STATAE=='037'); 
+	 projection = d3.geoAzimuthalEqualArea().rotate([90,0]).fitSize([map_width,map_height],map_data)
+	 geo_generator = d3.geoPath().projection(projection)
+
     d3.select('svg').append('g').attr('id', 'map_plot').attr('transform', "translate(" + padding + "," + padding + ")")
+
+	 //draw states and color states
     let states = d3.selectAll('#map_plot').selectAll(".state")
-        .data(uStatePaths).enter().append("path").attr("class", "state").attr("d", function (d) {
-            return d.d;
-        }).style("fill", function (d) {
+        .data(map_data.features).enter().append("path").attr("class", "state").attr("d", geo_generator)
+		.style("fill", function (d) {
                 let element = aggregatedByState.find(function (element) {
-                    return element.key == d.id.toLowerCase()
+                    return element.key == d.properties['NAME']
                 });
                 let coef = 0;
                 if (element) {
@@ -43,6 +49,23 @@ function plot_it() {
                 return d3.interpolate("#ffffcc", "#800026")(coef / 4000);
             }
         );
+	 
+	
+	 //add map legends
+
+	 //add ufo reports data points onto the map
+	 all_reports = [];
+	 ufo_data.forEach(function(d){
+		all_reports.push([d.longtitude, d.latitude]);
+	 })
+	 projected_reports =  all_reports.map(d=>projection(d));
+
+	 d3.selectAll('#map_plot').selectAll('circle').data(projected_reports).enter().append('circle')
+		.attr('fill', 'red')
+		.attr('cx', d => d[0])
+		.attr('cy', d => d[1])
+		.attr('r', 2)
+		.attr('fill-opacity', '0.2')
 
 
     // hover
@@ -62,10 +85,12 @@ function plot_it() {
     d3.selectAll('#subplot3').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
 
+  	
+
     // plot the sub plots
     states.on("click", function (d) {
 
-        let selectedState = d.id.toLowerCase();
+        let selectedState = d.properties['NAME'];
         plotSubTimePlot(selectedState);
     });
 

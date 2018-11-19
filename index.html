@@ -7,20 +7,21 @@
 	</head>
 	<body>
 	
-	<script type='text/javascript' src='webpage/uStates.js'></script>
+	<script type='text/javascript' src='webpage/topojson.v2.min.js'></script>
 	<script type='text/javascript' src='webpage/ufo_visualizations.js'></script>
 	<script type='text/javascript'>
 		d3.csv('data/ufo_data_cleaned.csv')
-		  .then(function(data)  {
-			  ufo_data = data;
-           /*ufo_data.forEach(function(d)  {
-              console.log(d)
-              
-           });
-				*/
+		  .then(function(data1)  {
+	
+			  d3.json('webpage/us-geo.json').then(function(data2){		
+				  ufo_data = data1;
+				  map_data = data2;
+					
+					
 
 
 			  plot_it();
+			  })
 		  })
 		
 	</script>
