@@ -38,6 +38,7 @@ function plot_it() {
 
     let mapPlot = d3.select('svg').append('g').attr('id', 'map_plot').attr('transform', "translate(" + padding + "," + padding + ")");
 
+//	mapPlot.append('rect').attr('fill','lightblue').attr('x',0).attr('y',0).attr('height',height).attr('width',width);
     //draw states and color states
     let states = mapPlot.selectAll(".state")
         .data(map_data.features).enter().append("path").attr("class", "state").attr("d", geo_generator)
@@ -65,18 +66,23 @@ function plot_it() {
 
     let viewCircle = false;
     // change view
-    svg.append('text').text('details')
+    svg.append('text').text('Detailed Report Map')
         .attr('x', 10)
         .attr('y', 10)
+		.attr('fill', 'purple')
+		.attr('stoke','white')
         .on("click", function() {
-        if(!viewCircle) {
-            plotCircles();
-            viewCircle = true;
-        } else {
-            removeCircles();
-            viewCircle = false;
-        }
-    });
+			if(!viewCircle) {
+				plotCircles();
+				viewCircle = true;
+			} else {
+				removeCircles();
+				viewCircle = false;
+			}
+    	})
+		.on('mouseover', function(d){
+			d3.select(this).style('cursor','hand');
+		});
 
 
     function plotCircles() {
