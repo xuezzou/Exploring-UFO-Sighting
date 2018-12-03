@@ -66,11 +66,19 @@ function plot_it() {
 
     let viewCircle = false;
     // change view
+	svg.append('rect')
+		.attr('rx',5)
+		.attr('ry',5)
+		.attr('x',0)
+		.attr('y',0)
+		.attr('height',30)
+		.attr('width', 160)
+		.attr('fill','purple')
     svg.append('text').text('Detailed Report Map')
         .attr('x', 10)
-        .attr('y', 10)
-		.attr('fill', 'purple')
-		.attr('stoke','white')
+        .attr('y', 20)
+		.attr('fill', 'white')
+	//	.attr('stoke','white')
         .on("click", function() {
 			if(!viewCircle) {
 				plotCircles();
