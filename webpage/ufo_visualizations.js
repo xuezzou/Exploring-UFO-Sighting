@@ -41,7 +41,7 @@ function plot_it() {
 
 	mapPlot.append('rect').attr('x',0).attr('y',0).attr('height', map_height).attr('width',map_width).attr('fill','lightblue')
 
-    let zoomZone = mapPlot.append('g').attr('id', 'zoom_zone').attr('transform', "translate(" + 0 + "," + 0 + ")");
+    zoomZone = mapPlot.append('g').attr('id', 'zoom_zone').attr('transform', "translate(" + 0 + "," + 0 + ")");
 
 //	zoomZone.append('rect').attr('fill','lightblue').attr('x',0).attr('y',0).attr('height',height).attr('width',width);
     //draw states and color states
@@ -101,9 +101,10 @@ function plot_it() {
 
     function plotCircles() {
         // adjust the background
-        states.attr('fill-opacity', 0.2);
+        //states.attr('fill-opacity', 0.2);
         zoomZone.selectAll('circle').data(projected_reports).enter()
             .append('circle')
+			.attr('class', 'reports')
             .attr('fill', '#800000')
             .attr('cx', d => d[0])
             .attr('cy', d => d[1])
@@ -121,11 +122,12 @@ function plot_it() {
 
     function removeCircles() {
         states.attr('fill-opacity', 1);
-        zoomZone.selectAll('circle').remove();
+        zoomZone.selectAll('.reports').remove();
     }
 
 
     // add air base button/click effect
+	view_air_bases = false;
 	svg.append('rect')
 		.attr('rx',5)
 		.attr('ry',5)
@@ -140,10 +142,12 @@ function plot_it() {
 		.attr('fill', 'white')
 	//	.attr('stoke','white')
         .on("click", function() {
-			if(!viewCircle) {
+			if(!view_air_bases) {
+				view_air_bases = true;
 				plotAirBases();
 				
 			} else {
+				view_air_bases = false;
 				removeAirBases();
 			
 			}
@@ -164,17 +168,23 @@ function plot_it() {
 
     function plotAirBases() {
         // adjust the background
-        states.attr('fill-opacity', 0.2);
-        zoomZone.selectAll('circle').data(projected_air_bases).enter()
+        //states.attr('fill-opacity', 0.2);
+        zoomZone.selectAll('none').data(projected_air_bases).enter()
+				.append('polygon')
+				.attr('points','100,10 40,198 190,78 10,78 160,198')
+				.attr('transform',d=>'translate('+(d[0]-20)+','+(d[1]-22)+') scale(0.2)')
+				.attr('fill','yellow')
+        zoomZone.selectAll('none').data(projected_air_bases).enter()
             .append('circle')
+			.attr('class', 'air_bases')
             .attr('fill', '#800000')
             .attr('cx', d => d[0])
             .attr('cy', d => d[1])
-            .attr('r', 1.3)
+            .attr('r', 7)
             .attr('stroke', '#ffffcc')
             .attr('stroke-width', 0.1)
-            .attr('stroke-opacity', 0.1)
-            .attr('fill-opacity', '0.2');
+           // .attr('stroke-opacity', 0.1)
+           // .attr('fill-opacity', '0.2');
 
         // allow zooming effect
         zoomZone.call(d3.zoom().on("zoom", function () {
@@ -183,8 +193,8 @@ function plot_it() {
     }
 
     function removeAirBases() {
-        states.attr('fill-opacity', 1);
-        zoomZone.selectAll('circle').remove();
+      //  states.attr('fill-opacity', 1);
+        zoomZone.selectAll('.air_bases').remove();
     }
 
     // hover
