@@ -30,17 +30,38 @@ function plot_it() {
         return d.state;
     }).entries(ufo_data);
 
+	//layout everything
+    let all_svg = d3.selectAll('body').append('svg').attr('id', 'all_svg').attr('width', width).attr('height', height);
 
-    let svg = d3.selectAll('body').append('svg').attr('width', width).attr('height', height);
-    //add map section
+	let map_plot=d3.select('svg').append('g').attr('id','map_plot').attr('transform', "translate(" + padding + "," + upper_padding + ")");
+	
+	let left_svg = map_plot.append('svg').attr('id','left_svg').attr('height', map_height).attr('width', map_width)
+
+	//add background
+	let map_bg = left_svg.append('rect').attr('id','map_bg').attr('x',0).attr('y',0).attr('height', map_height).attr('width',map_width).attr('fill','lightblue')
+
+
+    zoomZone = left_svg.append('g').attr('id', 'zoom_zone').attr('transform', "translate(" + 0 + "," + 0 + ")");
+
+
+    //add info section
+    all_svg.append('g').attr('id', 'info_plot').attr('transform', "translate(" + (map_width + padding) + "," + upper_padding + ")")
+    let timePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot1').attr('transform', "translate(" + padding + "," + 0 + ")")
+
+    d3.selectAll('#subplot1').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
+
+
+    let shapePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + sub_padding) + ")")
+    d3.selectAll('#subplot2').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
+
+    d3.selectAll('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 2 * sub_padding) + ")")
+    d3.selectAll('#subplot3').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
+	
+
+	//fill in contents in map section
     let projection = d3.geoAzimuthalEqualArea().rotate([90, 0]).fitSize([map_width, map_height], map_data);
     let geo_generator = d3.geoPath().projection(projection);
 
-	let mapPlot=d3.select('svg').append('g').attr('id','map_plot').attr('transform', "translate(" + padding + "," + upper_padding + ")");
-
-	mapPlot.append('rect').attr('x',0).attr('y',0).attr('height', map_height).attr('width',map_width).attr('fill','lightblue')
-
-    zoomZone = mapPlot.append('g').attr('id', 'zoom_zone').attr('transform', "translate(" + 0 + "," + 0 + ")");
 
     //draw states and color states
     let states = zoomZone.selectAll(".state")
@@ -74,7 +95,7 @@ function plot_it() {
 
     let viewCircle = false;
     //add Show Reports button/Click effect
-	svg.append('rect')
+	left_svg.append('rect')
 		.attr('rx',5)
 		.attr('ry',5)
 		.attr('x',padding+10)
@@ -94,7 +115,7 @@ function plot_it() {
 		.on('mouseover', function(d){
 			d3.select(this).style('cursor','hand');
 		});
-    svg.append('text').text('Show Report Map')
+    left_svg.append('text').text('Show Report Map')
         .attr('x', padding+20)
         .attr('y', padding+20)
 		.attr('fill', 'white')
@@ -136,7 +157,7 @@ function plot_it() {
 
     // add Show Air Base button/click effect
 	view_air_bases = false;
-	svg.append('rect')
+	left_svg.append('rect')
 		.attr('rx',5)
 		.attr('ry',5)
 		.attr('x',padding+10)
@@ -158,7 +179,7 @@ function plot_it() {
 		.on('mouseover', function(d){
 			d3.select(this).style('cursor','hand');
 		});
-    svg.append('text').text('Show Air Bases')
+    left_svg.append('text').text('Show Air Bases')
         .attr('x', padding+27)
         .attr('y', 2*padding+30)
 		.attr('fill', 'white')
@@ -237,18 +258,6 @@ function plot_it() {
 
     // transition
 
-    //add info section
-    d3.selectAll('svg').append('g').attr('id', 'info_plot').attr('transform', "translate(" + (map_width + padding) + "," + upper_padding + ")")
-    let timePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot1').attr('transform', "translate(" + padding + "," + 0 + ")")
-
-    d3.selectAll('#subplot1').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
-
-
-    let shapePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + sub_padding) + ")")
-    d3.selectAll('#subplot2').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
-
-    d3.selectAll('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 2 * sub_padding) + ")")
-    d3.selectAll('#subplot3').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
 	var pause = false
     // plot the sub plots
