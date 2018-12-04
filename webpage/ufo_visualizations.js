@@ -22,9 +22,9 @@ function plot_it() {
     let map_width = 960;
     let map_height = 570;
 
-    let sub_info_width = 180;
-    let sub_info_height = 180;
-	let sub_padding = 15;
+    let sub_info_width = 175;
+    let sub_info_height = 175;
+	let sub_padding = 20;
     // aggregate the data
     let aggregatedByState = d3.nest().key(function (d) {
         return d.state;
@@ -125,6 +125,24 @@ function plot_it() {
 
 
     // hover
+
+    states.on("mouseover", function (d) {
+		if(pause == false){
+			let selectedState = d.properties['NAME'];
+
+			selectedStateData = aggregatedByState.find(function (element) {
+				return element.key == selectedState;
+			});
+			// data not find
+			if (!selectedStateData) {
+				return;
+			}
+
+			plotSubTimePlot(selectedState, selectedStateData);
+			plofSubShapePlot(selectedState, selectedStateData);
+		}
+    });
+
     // transition
 
     //add info section
@@ -140,10 +158,17 @@ function plot_it() {
     d3.selectAll('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 2 * sub_padding) + ")")
     d3.selectAll('#subplot3').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
-
+	var pause = false
     // plot the sub plots
     states.on("click", function (d) {
         let selectedState = d.properties['NAME'];
+
+		if(pause == false){
+			pause = true
+		}
+		else{
+			pause = false
+		}		
 
         selectedStateData = aggregatedByState.find(function (element) {
             return element.key == selectedState;
