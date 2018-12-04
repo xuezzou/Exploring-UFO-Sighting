@@ -69,8 +69,9 @@ function plot_it() {
     });
     let projected_reports = all_reports.map(d => projection(d));
 
+
     let viewCircle = false;
-    // change view
+    // add detailed button/click effect
 	svg.append('rect')
 		.attr('rx',5)
 		.attr('ry',5)
@@ -79,7 +80,7 @@ function plot_it() {
 		.attr('height',30)
 		.attr('width', 160)
 		.attr('fill','purple')
-    svg.append('text').text('Detailed Report Map')
+    svg.append('text').text('Show Report Map')
         .attr('x', padding+20)
         .attr('y', padding+20)
 		.attr('fill', 'white')
@@ -123,6 +124,68 @@ function plot_it() {
         zoomZone.selectAll('circle').remove();
     }
 
+
+    // add air base button/click effect
+	svg.append('rect')
+		.attr('rx',5)
+		.attr('ry',5)
+		.attr('x',padding+10)
+		.attr('y',2* padding+10)
+		.attr('height',30)
+		.attr('width', 160)
+		.attr('fill','purple')
+    svg.append('text').text('Show Air Bases')
+        .attr('x', padding+20)
+        .attr('y', 2*padding+30)
+		.attr('fill', 'white')
+	//	.attr('stoke','white')
+        .on("click", function() {
+			if(!viewCircle) {
+				plotAirBases();
+				
+			} else {
+				removeAirBases();
+			
+			}
+    	})
+		.on('mouseover', function(d){
+			d3.select(this).style('cursor','hand');
+		});
+
+
+	//add air base data
+	
+    all_air_bases = [];
+    air_base_data.forEach(function (d) {
+        all_air_bases.push([d.longtitude, d.latitude, d.Name]);
+    });
+    projected_air_bases = all_air_bases.map(d => projection(d));
+	
+
+    function plotAirBases() {
+        // adjust the background
+        states.attr('fill-opacity', 0.2);
+        zoomZone.selectAll('circle').data(projected_air_bases).enter()
+            .append('circle')
+            .attr('fill', '#800000')
+            .attr('cx', d => d[0])
+            .attr('cy', d => d[1])
+            .attr('r', 1.3)
+            .attr('stroke', '#ffffcc')
+            .attr('stroke-width', 0.1)
+            .attr('stroke-opacity', 0.1)
+            .attr('fill-opacity', '0.2');
+
+        // allow zooming effect
+        zoomZone.call(d3.zoom().on("zoom", function () {
+            zoomZone.attr("transform", d3.event.transform)
+        }));
+    }
+
+    function removeAirBases() {
+        states.attr('fill-opacity', 1);
+        zoomZone.selectAll('circle').remove();
+    }
 
     // hover
 
