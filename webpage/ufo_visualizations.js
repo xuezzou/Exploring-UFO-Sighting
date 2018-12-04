@@ -62,6 +62,10 @@ function plot_it() {
 
     //add map legends
 
+	// allow zooming effect
+	zoomZone.call(d3.zoom().on("zoom", function () {
+		zoomZone.attr("transform", d3.event.transform)
+	}));
     //add ufo reports data points onto the map
     let all_reports = [];
     ufo_data.forEach(function (d) {
@@ -124,10 +128,6 @@ function plot_it() {
             .attr('stroke-opacity', 0.1)
             .attr('fill-opacity', '0.2');
 
-        // allow zooming effect
-        zoomZone.call(d3.zoom().on("zoom", function () {
-            zoomZone.attr("transform", d3.event.transform)
-        }));
     }
 
     function removeCircles() {
@@ -209,10 +209,6 @@ function plot_it() {
            // .attr('stroke-opacity', 0.1)
            // .attr('fill-opacity', '0.2');
 
-        // allow zooming effect
-        zoomZone.call(d3.zoom().on("zoom", function () {
-            zoomZone.attr("transform", d3.event.transform)
-        }));
     }
 
     function removeAirBases() {
