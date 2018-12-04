@@ -33,7 +33,6 @@ function plot_it() {
 
     let svg = d3.selectAll('body').append('svg').attr('width', width).attr('height', height);
     //add map section
-    //map_data.features = map_data.features.filter(d => d.properties.STATAE=='037'); 
     let projection = d3.geoAzimuthalEqualArea().rotate([90, 0]).fitSize([map_width, map_height], map_data);
     let geo_generator = d3.geoPath().projection(projection);
 
@@ -43,7 +42,6 @@ function plot_it() {
 
     zoomZone = mapPlot.append('g').attr('id', 'zoom_zone').attr('transform', "translate(" + 0 + "," + 0 + ")");
 
-//	zoomZone.append('rect').attr('fill','lightblue').attr('x',0).attr('y',0).attr('height',height).attr('width',width);
     //draw states and color states
     let states = zoomZone.selectAll(".state")
         .data(map_data.features).enter().append("path").attr("class", "state").attr("d", geo_generator)
@@ -75,7 +73,7 @@ function plot_it() {
 
 
     let viewCircle = false;
-    // add detailed button/click effect
+    //add Show Reports button/Click effect
 	svg.append('rect')
 		.attr('rx',5)
 		.attr('ry',5)
@@ -136,7 +134,7 @@ function plot_it() {
     }
 
 
-    // add air base button/click effect
+    // add Show Air Base button/click effect
 	view_air_bases = false;
 	svg.append('rect')
 		.attr('rx',5)
@@ -193,10 +191,11 @@ function plot_it() {
         // adjust the background
         //states.attr('fill-opacity', 0.2);
         zoomZone.selectAll('none').data(projected_air_bases).enter()
-				.append('polygon')
-				.attr('points','100,10 40,198 190,78 10,78 160,198')
-				.attr('transform',d=>'translate('+(d[0]-20)+','+(d[1]-22)+') scale(0.2)')
-				.attr('fill','yellow')
+			.append('polygon')
+			.attr('class','air_bases')
+			.attr('points','100,10 40,198 190,78 10,78 160,198')
+			.attr('transform',d=>'translate('+(d[0]-20)+','+(d[1]-22)+') scale(0.2)')
+			.attr('fill','yellow')
         zoomZone.selectAll('none').data(projected_air_bases).enter()
             .append('circle')
 			.attr('class', 'air_bases')
