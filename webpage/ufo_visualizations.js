@@ -82,9 +82,16 @@ function plot_it() {
     //add map legends
 
 	// allow zooming effect
-	zoomZone.call(d3.zoom().on("zoom", function () {
+	function zoomed(){
+
 		zoomZone.attr("transform", d3.event.transform)
-	}));
+
+	} 
+	zoom = d3.zoom().on("zoom", zoomed);
+	zoomZone.call(zoom);
+	
+
+var zoom = d3.zoom().on("zoom", zoomed);
     //add ufo reports data points onto the map
     let all_reports = [];
     ufo_data.forEach(function (d) {
@@ -257,7 +264,7 @@ function plot_it() {
     });
 
 
-
+	//re-center button
 	left_svg.append('rect')
 		.attr('rx',5)
 		.attr('ry',5)
@@ -267,15 +274,6 @@ function plot_it() {
 		.attr('width', 140)
 		.attr('fill','orange')
         .on("click", function() {
-			if(!view_air_bases) {
-				view_air_bases = true;
-				plotAirBases();
-				
-			} else {
-				view_air_bases = false;
-				removeAirBases();
-			
-			}
     	})
 
     left_svg.append('text').text('Re-center')
@@ -283,16 +281,16 @@ function plot_it() {
         .attr('y', 3*padding+40)
 		.attr('fill', 'white')
         .on("click", function() {
-			if(!view_air_bases) {
-				view_air_bases = true;
-				plotAirBases();
-				
-			} else {
-				view_air_bases = false;
-				removeAirBases();
-			
-			}
+			recenter();
     	})
+	
+
+	function recenter(){
+		console.log('test')
+		zoomZone.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+	}
+
+	
     // transition
 
 
