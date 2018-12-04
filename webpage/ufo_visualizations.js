@@ -138,6 +138,7 @@ function plot_it() {
 				return;
 			}
 
+			d3.select(this).style('cursor','hand');
 			plotSubTimePlot(selectedState, selectedStateData);
 			plofSubShapePlot(selectedState, selectedStateData);
 		}
