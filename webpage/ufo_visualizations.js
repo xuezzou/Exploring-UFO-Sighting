@@ -15,15 +15,16 @@ function plot_it() {
     // set up sizes
     let width = 2000;
     let height = 1000;
+	let upper_padding = 15;
     let padding = 30;
     let opacity = 0.1;
 
     let map_width = 960;
-    let map_height = 600;
+    let map_height = 570;
 
-    let sub_info_width = 200;
-    let sub_info_height = 200;
-
+    let sub_info_width = 180;
+    let sub_info_height = 180;
+	let sub_padding = 15;
     // aggregate the data
     let aggregatedByState = d3.nest().key(function (d) {
         return d.state;
@@ -36,11 +37,15 @@ function plot_it() {
     let projection = d3.geoAzimuthalEqualArea().rotate([90, 0]).fitSize([map_width, map_height], map_data);
     let geo_generator = d3.geoPath().projection(projection);
 
-    let mapPlot = d3.select('svg').append('g').attr('id', 'map_plot').attr('transform', "translate(" + padding + "," + padding + ")");
+	let mapPlot=d3.select('svg').append('g').attr('id','map_plot').attr('transform', "translate(" + padding + "," + upper_padding + ")");
 
-//	mapPlot.append('rect').attr('fill','lightblue').attr('x',0).attr('y',0).attr('height',height).attr('width',width);
+	mapPlot.append('rect').attr('x',0).attr('y',0).attr('height', map_height).attr('width',map_width).attr('fill','lightblue')
+
+    let zoomZone = mapPlot.append('g').attr('id', 'zoom_zone').attr('transform', "translate(" + 0 + "," + 0 + ")");
+
+//	zoomZone.append('rect').attr('fill','lightblue').attr('x',0).attr('y',0).attr('height',height).attr('width',width);
     //draw states and color states
-    let states = mapPlot.selectAll(".state")
+    let states = zoomZone.selectAll(".state")
         .data(map_data.features).enter().append("path").attr("class", "state").attr("d", geo_generator)
         .style("fill", function (d) {
                 let element = aggregatedByState.find(function (element) {
@@ -69,14 +74,14 @@ function plot_it() {
 	svg.append('rect')
 		.attr('rx',5)
 		.attr('ry',5)
-		.attr('x',0)
-		.attr('y',0)
+		.attr('x',padding+10)
+		.attr('y',padding)
 		.attr('height',30)
 		.attr('width', 160)
 		.attr('fill','purple')
     svg.append('text').text('Detailed Report Map')
-        .attr('x', 10)
-        .attr('y', 20)
+        .attr('x', padding+20)
+        .attr('y', padding+20)
 		.attr('fill', 'white')
 	//	.attr('stoke','white')
         .on("click", function() {
@@ -96,7 +101,7 @@ function plot_it() {
     function plotCircles() {
         // adjust the background
         states.attr('fill-opacity', 0.2);
-        mapPlot.selectAll('circle').data(projected_reports).enter()
+        zoomZone.selectAll('circle').data(projected_reports).enter()
             .append('circle')
             .attr('fill', '#800000')
             .attr('cx', d => d[0])
@@ -108,14 +113,14 @@ function plot_it() {
             .attr('fill-opacity', '0.2');
 
         // allow zooming effect
-        mapPlot.call(d3.zoom().on("zoom", function () {
-            mapPlot.attr("transform", d3.event.transform)
+        zoomZone.call(d3.zoom().on("zoom", function () {
+            zoomZone.attr("transform", d3.event.transform)
         }));
     }
 
     function removeCircles() {
         states.attr('fill-opacity', 1);
-        mapPlot.selectAll('circle').remove();
+        zoomZone.selectAll('circle').remove();
     }
 
 
@@ -123,16 +128,16 @@ function plot_it() {
     // transition
 
     //add info section
-    d3.selectAll('svg').append('g').attr('id', 'info_plot').attr('transform', "translate(" + (map_width + padding) + "," + padding + ")")
-    let timePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot1').attr('transform', "translate(" + padding + "," + padding + ")")
+    d3.selectAll('svg').append('g').attr('id', 'info_plot').attr('transform', "translate(" + (map_width + padding) + "," + upper_padding + ")")
+    let timePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot1').attr('transform', "translate(" + padding + "," + 0 + ")")
 
     d3.selectAll('#subplot1').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
 
-    let shapePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + 2 * padding) + ")")
+    let shapePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + sub_padding) + ")")
     d3.selectAll('#subplot2').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
-    d3.selectAll('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 3 * padding) + ")")
+    d3.selectAll('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 2 * sub_padding) + ")")
     d3.selectAll('#subplot3').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
 
