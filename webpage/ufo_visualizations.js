@@ -78,13 +78,8 @@ function plot_it() {
 		.attr('x',padding+10)
 		.attr('y',padding)
 		.attr('height',30)
-		.attr('width', 160)
+		.attr('width', 140)
 		.attr('fill','purple')
-    svg.append('text').text('Show Report Map')
-        .attr('x', padding+20)
-        .attr('y', padding+20)
-		.attr('fill', 'white')
-	//	.attr('stoke','white')
         .on("click", function() {
 			if(!viewCircle) {
 				plotCircles();
@@ -97,7 +92,22 @@ function plot_it() {
 		.on('mouseover', function(d){
 			d3.select(this).style('cursor','hand');
 		});
-
+    svg.append('text').text('Show Report Map')
+        .attr('x', padding+20)
+        .attr('y', padding+20)
+		.attr('fill', 'white')
+        .on("click", function() {
+			if(!viewCircle) {
+				plotCircles();
+				viewCircle = true;
+			} else {
+				removeCircles();
+				viewCircle = false;
+			}
+    	})
+		.on('mouseover', function(d){
+			d3.select(this).style('cursor','hand');
+		});
 
     function plotCircles() {
         // adjust the background
@@ -134,13 +144,26 @@ function plot_it() {
 		.attr('x',padding+10)
 		.attr('y',2* padding+10)
 		.attr('height',30)
-		.attr('width', 160)
+		.attr('width', 140)
 		.attr('fill','purple')
+        .on("click", function() {
+			if(!view_air_bases) {
+				view_air_bases = true;
+				plotAirBases();
+				
+			} else {
+				view_air_bases = false;
+				removeAirBases();
+			
+			}
+    	})
+		.on('mouseover', function(d){
+			d3.select(this).style('cursor','hand');
+		});
     svg.append('text').text('Show Air Bases')
-        .attr('x', padding+20)
+        .attr('x', padding+27)
         .attr('y', 2*padding+30)
 		.attr('fill', 'white')
-	//	.attr('stoke','white')
         .on("click", function() {
 			if(!view_air_bases) {
 				view_air_bases = true;
