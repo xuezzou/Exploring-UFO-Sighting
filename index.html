@@ -11,19 +11,18 @@
 	<!--<script type='text/javascript' src='webpage/topojson.v2.min.js'></script>-->
 	<script type='text/javascript' src='webpage/ufo_visualizations.js'></script>
 	<script type='text/javascript'>
-		d3.csv('data/ufo_data_cleaned.csv')
-		  .then(function(data1)  {
-	
-			  d3.json('webpage/us-geo.json').then(function(data2){		
-				  ufo_data = data1;
-				  map_data = data2;
-					
-					
-
-
-			  plot_it();
-			  })
-		  })
+		d3.csv('data/ufo_data_cleaned.csv').then(function(data1){
+			d3.csv('data/air_base_pos.csv').then(function(data2)  {
+				d3.json('webpage/us-geo.json').then(function(data3){		
+			
+					ufo_data = data1;
+					air_base_data = data2;
+					map_data = data3;
+						
+					plot_it();
+				})
+			})
+		})
 		
 	</script>
 	</body>
