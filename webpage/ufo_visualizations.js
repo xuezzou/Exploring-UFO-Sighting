@@ -42,7 +42,7 @@ function plot_it() {
 
 
     zoomZone = left_svg.append('g').attr('id', 'zoom_zone').attr('transform', "translate(" + 0 + "," + 0 + ")");
-
+	let zoomZoneBg = zoomZone.append('rect').attr('id','zoom_zone_bg').attr('x',0).attr('y',0).attr('height', map_height).attr('width',map_width).attr('opacity',0)
 
     //add info section
     all_svg.append('g').attr('id', 'info_plot').attr('transform', "translate(" + (map_width + padding) + "," + upper_padding + ")")
@@ -256,7 +256,45 @@ function plot_it() {
 		}
     });
 
+
+
+	left_svg.append('rect')
+		.attr('rx',5)
+		.attr('ry',5)
+		.attr('x',padding+10)
+		.attr('y',3* padding+20)
+		.attr('height',30)
+		.attr('width', 140)
+		.attr('fill','orange')
+        .on("click", function() {
+			if(!view_air_bases) {
+				view_air_bases = true;
+				plotAirBases();
+				
+			} else {
+				view_air_bases = false;
+				removeAirBases();
+			
+			}
+    	})
+
+    left_svg.append('text').text('Re-center')
+        .attr('x', padding+50)
+        .attr('y', 3*padding+40)
+		.attr('fill', 'white')
+        .on("click", function() {
+			if(!view_air_bases) {
+				view_air_bases = true;
+				plotAirBases();
+				
+			} else {
+				view_air_bases = false;
+				removeAirBases();
+			
+			}
+    	})
     // transition
+
 
 
 	var pause = false
