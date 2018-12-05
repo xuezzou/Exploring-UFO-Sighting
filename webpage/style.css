@@ -1,3 +1,20 @@
 .state:hover {
     stroke: #FF4500;
+    cursor: pointer;
+}
+
+/* On mouse hover, lighten state color */
+path:hover {
+    fill-opacity: .7;
+}
+.DetailedButton {
+    cursor: pointer;
+}
+body {
+    font-family: sans-serif;
+
+}
+
+.mapPlotBg {
+    z-index: -1;
 }

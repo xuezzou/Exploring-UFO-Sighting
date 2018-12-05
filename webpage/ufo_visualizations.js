@@ -15,7 +15,7 @@ function plot_it() {
     // set up sizes
     let width = 2000;
     let height = 1000;
-	let upper_padding = 15;
+    let upper_padding = 15;
     let padding = 30;
     let opacity = 0.1;
 
@@ -24,25 +24,30 @@ function plot_it() {
 
     let sub_info_width = 175;
     let sub_info_height = 175;
-	let sub_padding = 20;
+    let sub_padding = 20;
+
     // aggregate the data
     let aggregatedByState = d3.nest().key(function (d) {
         return d.state;
     }).entries(ufo_data);
 
-	//layout everything
+    //layout everything
     let all_svg = d3.selectAll('body').append('svg').attr('id', 'all_svg').attr('width', width).attr('height', height);
 
-	let map_plot=d3.select('svg').append('g').attr('id','map_plot').attr('transform', "translate(" + padding + "," + upper_padding + ")");
-	
-	let left_svg = map_plot.append('svg').attr('id','left_svg').attr('height', map_height).attr('width', map_width)
+    let map_plot = d3.select('svg').append('g').attr('id', 'map_plot').attr('transform', "translate(" + padding + "," + upper_padding + ")");
 
-	//add background
-	let map_bg = left_svg.append('rect').attr('id','map_bg').attr('x',0).attr('y',0).attr('height', map_height).attr('width',map_width).attr('fill','lightblue')
+    let left_svg = map_plot.append('svg').attr('id', 'left_svg').attr('height', map_height).attr('width', map_width);
 
+    //add background
+    let map_bg = left_svg
+        .append('rect')
+        .attr('id', 'map_bg')
+        .attr('x', 0).attr('y', 0)
+        .attr('height', map_height).attr('width', map_width)
+        .attr('fill', 'lightblue').attr('fill-opacity', 0.5);
 
-    zoomZone = left_svg.append('g').attr('id', 'zoom_zone').attr('transform', "translate(" + 0 + "," + 0 + ")");
-	let zoomZoneBg = zoomZone.append('rect').attr('id','zoom_zone_bg').attr('x',0).attr('y',0).attr('height', map_height).attr('width',map_width).attr('opacity',0)
+    let zoomZone = left_svg.append('g').attr('id', 'zoom_zone').attr('transform', "translate(" + 0 + "," + 0 + ")");
+    let zoomZoneBg = zoomZone.append('rect').attr('id', 'zoom_zone_bg').attr('x', 0).attr('y', 0).attr('height', map_height).attr('width', map_width).attr('opacity', 0)
 
     //add info section
     all_svg.append('g').attr('id', 'info_plot').attr('transform', "translate(" + (map_width + padding) + "," + upper_padding + ")")
@@ -54,14 +59,18 @@ function plot_it() {
     let shapePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + sub_padding) + ")")
     d3.selectAll('#subplot2').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
-    d3.selectAll('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 2 * sub_padding) + ")")
+    let durationPlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 2 * sub_padding) + ")")
     d3.selectAll('#subplot3').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
-	
 
-	//fill in contents in map section
+
+    // fill in contents in map section
     let projection = d3.geoAzimuthalEqualArea().rotate([90, 0]).fitSize([map_width, map_height], map_data);
     let geo_generator = d3.geoPath().projection(projection);
 
+    // add background colors for the map
+    let backgroundStates = zoomZone.selectAll(".bgstate")
+        .data(map_data.features).enter().append("path").attr("class", "bgstate").attr("d", geo_generator)
+        .style("fill", "#ffffcc");
 
     //draw states and color states
     let states = zoomZone.selectAll(".state")
@@ -79,19 +88,17 @@ function plot_it() {
         );
 
 
-    //add map legends
+    //TODO add map legends
 
-	// allow zooming effect
-	function zoomed(){
+    // allow zooming effect
+    function zoomed() {
+        zoomZone.attr("transform", d3.event.transform)
+    }
 
-		zoomZone.attr("transform", d3.event.transform)
+    zoomZone.call(d3.zoom().on("zoom", zoomed));
 
-	} 
-	zoom = d3.zoom().on("zoom", zoomed);
-	zoomZone.call(zoom);
-	
+    var zoom = d3.zoom().on("zoom", zoomed);
 
-var zoom = d3.zoom().on("zoom", zoomed);
     //add ufo reports data points onto the map
     let all_reports = [];
     ufo_data.forEach(function (d) {
@@ -102,49 +109,49 @@ var zoom = d3.zoom().on("zoom", zoomed);
 
     let viewCircle = false;
     //add Show Reports button/Click effect
-	left_svg.append('rect')
-		.attr('rx',5)
-		.attr('ry',5)
-		.attr('x',padding+10)
-		.attr('y',padding)
-		.attr('height',30)
-		.attr('width', 140)
-		.attr('fill','purple')
-        .on("click", function() {
-			if(!viewCircle) {
-				plotCircles();
-				viewCircle = true;
-			} else {
-				removeCircles();
-				viewCircle = false;
-			}
-    	})
-		.on('mouseover', function(d){
-			d3.select(this).style('cursor','hand');
-		});
+    left_svg.append('rect')
+        .attr('rx', 5)
+        .attr('ry', 5)
+        .attr('x', padding + 10)
+        .attr('y', padding)
+        .attr('height', 30)
+        .attr('width', 140)
+        .attr('fill', 'purple')
+        .on("click", function () {
+            if (!viewCircle) {
+                plotCircles();
+                viewCircle = true;
+            } else {
+                removeCircles();
+                viewCircle = false;
+            }
+        })
+        .on('mouseover', function (d) {
+            d3.select(this).style('cursor', 'hand');
+        });
     left_svg.append('text').text('Show Report Map')
-        .attr('x', padding+20)
-        .attr('y', padding+20)
-		.attr('fill', 'white')
-        .on("click", function() {
-			if(!viewCircle) {
-				plotCircles();
-				viewCircle = true;
-			} else {
-				removeCircles();
-				viewCircle = false;
-			}
-    	})
-		.on('mouseover', function(d){
-			d3.select(this).style('cursor','hand');
-		});
+        .attr('x', padding + 20)
+        .attr('y', padding + 20)
+        .attr('fill', 'white')
+        .on("click", function () {
+            if (!viewCircle) {
+                plotCircles();
+                viewCircle = true;
+            } else {
+                removeCircles();
+                viewCircle = false;
+            }
+        })
+        .on('mouseover', function (d) {
+            d3.select(this).style('cursor', 'hand');
+        });
 
     function plotCircles() {
         // adjust the background
-        //states.attr('fill-opacity', 0.2);
+        states.attr('fill-opacity', 0.2);
         zoomZone.selectAll('circle').data(projected_reports).enter()
             .append('circle')
-			.attr('class', 'reports')
+            .attr('class', 'reports')
             .attr('fill', '#800000')
             .attr('cx', d => d[0])
             .attr('cy', d => d[1])
@@ -163,149 +170,148 @@ var zoom = d3.zoom().on("zoom", zoomed);
 
 
     // add Show Air Base button/click effect
-	view_air_bases = false;
-	left_svg.append('rect')
-		.attr('rx',5)
-		.attr('ry',5)
-		.attr('x',padding+10)
-		.attr('y',2* padding+10)
-		.attr('height',30)
-		.attr('width', 140)
-		.attr('fill','purple')
-        .on("click", function() {
-			if(!view_air_bases) {
-				view_air_bases = true;
-				plotAirBases();
-				
-			} else {
-				view_air_bases = false;
-				removeAirBases();
-			
-			}
-    	})
-		.on('mouseover', function(d){
-			d3.select(this).style('cursor','hand');
-		});
+    view_air_bases = false;
+    left_svg.append('rect')
+        .attr('rx', 5)
+        .attr('ry', 5)
+        .attr('x', padding + 10)
+        .attr('y', 2 * padding + 10)
+        .attr('height', 30)
+        .attr('width', 140)
+        .attr('fill', 'purple')
+        .on("click", function () {
+            if (!view_air_bases) {
+                view_air_bases = true;
+                plotAirBases();
+
+            } else {
+                view_air_bases = false;
+                removeAirBases();
+
+            }
+        })
+        .on('mouseover', function (d) {
+            d3.select(this).style('cursor', 'hand');
+        });
     left_svg.append('text').text('Show Air Bases')
-        .attr('x', padding+27)
-        .attr('y', 2*padding+30)
-		.attr('fill', 'white')
-        .on("click", function() {
-			if(!view_air_bases) {
-				view_air_bases = true;
-				plotAirBases();
-				
-			} else {
-				view_air_bases = false;
-				removeAirBases();
-			
-			}
-    	})
-		.on('mouseover', function(d){
-			d3.select(this).style('cursor','hand');
-		});
+        .attr('x', padding + 27)
+        .attr('y', 2 * padding + 30)
+        .attr('fill', 'white')
+        .on("click", function () {
+            if (!view_air_bases) {
+                view_air_bases = true;
+                plotAirBases();
+
+            } else {
+                view_air_bases = false;
+                removeAirBases();
+
+            }
+        })
+        .on('mouseover', function (d) {
+            d3.select(this).style('cursor', 'hand');
+        });
 
 
-	//add air base data
-	
+    //add air base data
+
     all_air_bases = [];
     air_base_data.forEach(function (d) {
         all_air_bases.push([d.longtitude, d.latitude, d.Name]);
     });
     projected_air_bases = all_air_bases.map(d => projection(d));
-	
+
 
     function plotAirBases() {
         // adjust the background
         //states.attr('fill-opacity', 0.2);
         zoomZone.selectAll('none').data(projected_air_bases).enter()
-			.append('polygon')
-			.attr('class','air_bases')
-			.attr('points','100,10 40,198 190,78 10,78 160,198')
-			.attr('transform',d=>'translate('+(d[0]-20)+','+(d[1]-22)+') scale(0.2)')
-			.attr('fill','yellow')
+            .append('polygon')
+            .attr('class', 'air_bases')
+            .attr('points', '100,10 40,198 190,78 10,78 160,198')
+            .attr('transform', d => 'translate(' + (d[0] - 20) + ',' + (d[1] - 22) + ') scale(0.2)')
+            .attr('fill', 'yellow')
         zoomZone.selectAll('none').data(projected_air_bases).enter()
             .append('circle')
-			.attr('class', 'air_bases')
+            .attr('class', 'air_bases')
             .attr('fill', '#800000')
             .attr('cx', d => d[0])
             .attr('cy', d => d[1])
             .attr('r', 7)
             .attr('stroke', '#ffffcc')
             .attr('stroke-width', 0.1)
-           // .attr('stroke-opacity', 0.1)
-           // .attr('fill-opacity', '0.2');
+        // .attr('stroke-opacity', 0.1)
+        // .attr('fill-opacity', '0.2');
 
     }
 
     function removeAirBases() {
-      //  states.attr('fill-opacity', 1);
+        //  states.attr('fill-opacity', 1);
         zoomZone.selectAll('.air_bases').remove();
     }
 
     // hover
 
     states.on("mouseover", function (d) {
-		if(pause == false){
-			let selectedState = d.properties['NAME'];
+        if (pause == false) {
+            let selectedState = d.properties['NAME'];
 
-			selectedStateData = aggregatedByState.find(function (element) {
-				return element.key == selectedState;
-			});
-			// data not find
-			if (!selectedStateData) {
-				return;
-			}
+            selectedStateData = aggregatedByState.find(function (element) {
+                return element.key == selectedState;
+            });
+            // data not find
+            if (!selectedStateData) {
+                return;
+            }
 
-			d3.select(this).style('cursor','hand');
-			plotSubTimePlot(selectedState, selectedStateData);
-			plofSubShapePlot(selectedState, selectedStateData);
-		}
+            d3.select(this).style('cursor', 'hand');
+            plotSubTimePlot(selectedState, selectedStateData);
+            plofSubShapePlot(selectedState, selectedStateData);
+        }
     });
 
 
-	//re-center button
-	left_svg.append('rect')
-		.attr('rx',5)
-		.attr('ry',5)
-		.attr('x',padding+10)
-		.attr('y',3* padding+20)
-		.attr('height',30)
-		.attr('width', 140)
-		.attr('fill','orange')
-        .on("click", function() {
-    	})
+    //re-center button
+    left_svg.append('rect')
+        .attr('rx', 5)
+        .attr('ry', 5)
+        .attr('x', padding + 10)
+        .attr('y', 3 * padding + 20)
+        .attr('height', 30)
+        .attr('width', 140)
+        .attr('fill', 'orange')
+        .on("click", function () {
+        })
 
     left_svg.append('text').text('Re-center')
-        .attr('x', padding+50)
-        .attr('y', 3*padding+40)
-		.attr('fill', 'white')
-        .on("click", function() {
-			recenter();
-    	})
-	
+        .attr('x', padding + 50)
+        .attr('y', 3 * padding + 40)
+        .attr('fill', 'white')
+        .on("click", function () {
+            recenter();
+        })
 
-	function recenter(){
-		console.log('test')
-		zoomZone.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
-	}
 
-	
+    function recenter() {
+        console.log('test')
+        zoomZone.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+    }
+
+
     // transition
 
 
-
-	var pause = false
+    var pause = false
     // plot the sub plots
     states.on("click", function (d) {
         let selectedState = d.properties['NAME'];
 
-		if(pause == false){
-			pause = true
-		}
-		else{
-			pause = false
-		}		
+        if (pause == false) {
+            pause = true
+        }
+        else {
+            pause = false
+        }
 
         selectedStateData = aggregatedByState.find(function (element) {
             return element.key == selectedState;
@@ -409,7 +415,9 @@ var zoom = d3.zoom().on("zoom", zoomed);
         }).rollup(function (leaves) {
             return leaves.length;
         }).entries(selectedStateData.values)
-            .sort(function(a, b){ return d3.descending(a.value, b.value); });
+            .sort(function (a, b) {
+                return d3.descending(a.value, b.value);
+            });
 
         selectedStateByShape = selectedStateByShape.slice(0, viewAmount);
 
