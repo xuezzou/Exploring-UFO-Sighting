@@ -306,7 +306,8 @@ function plot_it() {
         }
 
         plotSubTimePlot(selectedState, selectedStateData);
-        // plotSubShapePlot(selectedState, selectedStateData);
+        plotSubShapePlot(selectedState, selectedStateData);
+        plotDurationPlot(selectedState, selectedStateData);
     });
 
     function plotSubTimePlotHover(selectedState, selectedStateData) {
@@ -418,6 +419,8 @@ function plot_it() {
         }), d3.max(valueRange,function(d) {
             return d[1];
         } )];
+
+        timePlot.selectAll('path').remove();
 
         // year_range = []; can set year_range scale same here
         let x_scale = d3.scaleLinear().domain(finalYearRange).range([0, sub_info_width - 2 * padding]);
