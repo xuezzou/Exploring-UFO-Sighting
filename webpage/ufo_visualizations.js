@@ -556,13 +556,14 @@ function plot_it() {
             return d.value;
         });
 
-        let amount= durationRange[1] / (viewAmount - 1);
+        let amount= durationRange[1] / (viewAmount);
 
         // assume viewAmount is 3
         let durationGroup = [];
         for(let i = 1; i < viewAmount; ++i) {
             durationGroup.push(parseInt(amount * i, 10));
         }
+        // console.log(durationGroup);
 
         let bars_scale = d3.scaleThreshold()
             .domain(durationGroup)
@@ -591,7 +592,7 @@ function plot_it() {
             .data(dataFinal);
 
         update.enter().append("rect")
-            .attr('class', 'bar')
+            .attr('class', 'bar2')
             .attr("fill", "#800026")
             .attr("x", d => x(d.key))
             .attr("y", d => y(d.value))
