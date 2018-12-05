@@ -26,6 +26,13 @@ function plot_it() {
     let sub_info_height = 175;
     let sub_padding = 20;
 
+    // some colors used
+    let lightYellowish = "#ffffcc";
+    let darkReddish = "#800026";
+    let orangish = "#FF6347";
+    let coral = "#FF7F50";
+
+
     // aggregate the data
     let aggregatedByState = d3.nest().key(function (d) {
         return d.state;
@@ -59,7 +66,7 @@ function plot_it() {
 
     d3.selectAll('#subplot1').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
-    let wrapperSubplot2 =  d3.selectAll('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + sub_padding) + ")");
+    let wrapperSubplot2 = d3.selectAll('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + sub_padding) + ")");
     let shapePlot = wrapperSubplot2.append('g').attr('transform', "translate(" + padding + "," + padding + ")");
     d3.selectAll('#subplot2').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
@@ -75,7 +82,8 @@ function plot_it() {
     // add background colors for the map
     let backgroundStates = zoomZone.selectAll(".bgstate")
         .data(map_data.features).enter().append("path").attr("class", "bgstate").attr("d", geo_generator)
-        .style("fill", "#ffffcc");
+        .style("fill", lightYellowish);
+
 
     //draw states and color states
     let dataAggregated = {}; // dataAggregated holds the value of the count
@@ -90,8 +98,8 @@ function plot_it() {
                 if (element) {
                     coef = element.values.length;
                 }
-                dataAggregated[d.properties['NAME']]= coef;
-                return d3.interpolate("#ffffcc", "#800026")(coef / 4000);
+                dataAggregated[d.properties['NAME']] = coef;
+                return d3.interpolate(lightYellowish, darkReddish)(coef / 4000);
             }
         );
 
@@ -107,46 +115,23 @@ function plot_it() {
     //add ufo reports data points onto the map
     let all_reports = [];
     ufo_data.forEach(function (d) {
-        all_reports.push([d.longtitude, d.latitude, d.year]);
+        all_reports.push([d.longtitude, d.latitude, d.year, d.shape, d.duration]);
     });
-    let projected_reports = all_reports.map(d => projection(d));
+    let projected_reports = all_reports.map(d => [projection(d), d[2], d[3]]);
 
 
     let viewCircle = false;
     //add Show Reports button/Click effect
-    left_svg.append('rect')
-        .attr('rx', 5)
-        .attr('ry', 5)
-        .attr('x', padding + 10)
-        .attr('y', padding)
-        .attr('height', 30)
-        .attr('width', 150)
-        .attr('fill', 'purple')
-        .attr('class', 'detailedButton')
-        .on("click", function () {
-            if (!viewCircle) {
-                plotCircles();
-                viewCircle = true;
-            } else {
-                removeCircles();
-                viewCircle = false;
-            }
-        });
 
-    left_svg.append('text').text('Show Report Map')
-        .attr('x', padding + 20)
-        .attr('y', padding + 20)
-        .attr('fill', 'white')
-        .attr('class', 'detailedButton')
-        .on("click", function () {
-            if (!viewCircle) {
-                plotCircles();
-                viewCircle = true;
-            } else {
-                removeCircles();
-                viewCircle = false;
-            }
-        });
+    createButton("Show Report Map", 1, function () {
+        if (!viewCircle) {
+            plotCircles();
+            viewCircle = true;
+        } else {
+            removeCircles();
+            viewCircle = false;
+        }
+    }, darkReddish);
 
     function plotCircles() {
         // adjust the background
@@ -154,73 +139,37 @@ function plot_it() {
         let circles = zoomZone.selectAll('circle').data(projected_reports).enter()
             .append('circle')
             .attr('class', 'reports')
-            .attr('fill', '#800000')
-            .attr('cx', d => d[0])
-            .attr('cy', d => d[1])
+            .attr('cx', d => d[0][0])
+            .attr('cy', d => d[0][1])
             .attr('r', 1.3)
+            .attr('fill', darkReddish)
             .attr('stroke', '#ffffcc')
             .attr('stroke-width', 0.1)
             .attr('stroke-opacity', 0.1)
             .attr('fill-opacity', '0.2');
 
-        // brushing
-        // let brush = d3.brush();
-            // .x(x)
-            // .y(y)
-            // .on("start", brushstart)
-            // .on("brush", brushmove)
-            // .on("end", brushend);
-
-        // circles.call(brush);
+        link();
 
     }
 
     function removeCircles() {
         states.attr('fill-opacity', 1);
         zoomZone.selectAll('.reports').remove();
+
+        left_svg.selectAll('.link').remove();
     }
 
 
     // add Show Air Base button/click effect
-    let view_air_bases = false;
-    left_svg.append('rect')
-        .attr('rx', 5)
-        .attr('ry', 5)
-        .attr('x', padding + 10)
-        .attr('y', 2 * padding + 10)
-        .attr('height', 30)
-        .attr('width', 150)
-        .attr('fill', 'purple')
-        .attr('class', 'detailedButton')
-        .on("click", function () {
-            if (!view_air_bases) {
-                view_air_bases = true;
-                plotAirBases();
-
-            } else {
-                view_air_bases = false;
-                removeAirBases();
-            }
-        });
-
-    left_svg.append('text').text('Show Air Bases')
-        .attr('x', padding + 27)
-        .attr('y', 2 * padding + 30)
-        .attr('fill', 'white')
-        .attr('class', 'detailedButton')
-        .on("click", function () {
-            if (!view_air_bases) {
-                view_air_bases = true;
-                plotAirBases();
-
-            } else {
-                view_air_bases = false;
-                removeAirBases();
-
-            }
-        });
-
-
+    createButton("Show Air Bases", 2, function () {
+        if (!view_air_bases) {
+            view_air_bases = true;
+            plotAirBases();
+        } else {
+            view_air_bases = false;
+            removeAirBases();
+        }
+    }, darkReddish);
 
     //add air base data
 
@@ -259,27 +208,7 @@ function plot_it() {
         zoomZone.selectAll('.air_bases').remove();
     }
 
-    //re-center button
-    left_svg.append('rect')
-        .attr('rx', 5)
-        .attr('ry', 5)
-        .attr('x', padding + 10)
-        .attr('y', 3 * padding + 20)
-        .attr('height', 30)
-        .attr('width', 150)
-        .attr('fill', 'orange')
-        .attr('class', 'detailedButton')
-        .on("click", function () {
-        });
-
-    left_svg.append('text').text('Re-center')
-        .attr('x', padding + 50)
-        .attr('y', 3 * padding + 40)
-        .attr('fill', 'white')
-        .attr('class', 'detailedButton')
-        .on("click", function () {
-            recenter();
-        });
+    createButton("Re-center", 3, recenter, coral);
 
     function recenter() {
         zoomZone.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
@@ -326,7 +255,7 @@ function plot_it() {
 
         // console.log(year_range);
         // year_range = []; can set year_range scale same here
-        let x_scale = d3.scaleLinear().domain(year_range).range([0, sub_info_width - 2* padding]);
+        let x_scale = d3.scaleLinear().domain(year_range).range([0, sub_info_width - 2 * padding]);
         let y_scale = d3.scaleLinear().domain(value_range).range([sub_info_height - 2 * padding, 0]);
 
         // set up the line scale
@@ -345,7 +274,7 @@ function plot_it() {
             .attr('d', d => line_scale(selectedStateByTime))
             .attr('fill', 'none')
             .attr('stroke-width', 1)
-            .attr('stroke', '#800026');
+            .attr('stroke', coral);
         // .attr('stroke', d => d.color); TODO add color by different states
 
         // remove old series
@@ -365,8 +294,8 @@ function plot_it() {
         timePlot.append('g').attr('class', 'scale')
             .call(d3.axisLeft(y_scale).ticks(4))
             .append("text")
-            .attr("x", - padding)
-            .attr('y', - 6)
+            .attr("x", -padding)
+            .attr('y', -6)
             .attr("dy", "0.32em")
             .attr("fill", "#000")
             // .attr("font-weight", "bold")
@@ -387,6 +316,7 @@ function plot_it() {
 
 
     let TimePlotData = [];
+
     function plotSubTimePlot(selectedState, selectedStateData) {
 
         let selectedStateByTime = d3.nest().key(function (d) {
@@ -409,18 +339,19 @@ function plot_it() {
             yearRange.push(curTimeRange);
             valueRange.push(curValRange);
         });
-        let finalYearRange = [d3.min(yearRange, function(d) {
+        let finalYearRange = [d3.min(yearRange, function (d) {
             return d[0];
-        }), d3.max(yearRange,function(d) {
+        }), d3.max(yearRange, function (d) {
             return d[1];
-        } )];
-        let finalValRange = [d3.min(valueRange, function(d) {
+        })];
+        let finalValRange = [d3.min(valueRange, function (d) {
             return d[0];
-        }), d3.max(valueRange,function(d) {
+        }), d3.max(valueRange, function (d) {
             return d[1];
-        } )];
+        })];
 
         timePlot.selectAll('path').remove();
+
 
         // year_range = []; can set year_range scale same here
         let x_scale = d3.scaleLinear().domain(finalYearRange).range([0, sub_info_width - 2 * padding]);
@@ -430,7 +361,7 @@ function plot_it() {
         let line_scale = d3.line().x(d => x_scale(parseInt(d.key))).y(d => y_scale(d.value));
 
         // data join
-        let update_path = timePlot.selectAll('path').data(TimePlotData);
+        update_path = timePlot.selectAll('path').data(TimePlotData);
         // console.log(selectedStateByTime);
 
         // add new series
@@ -438,7 +369,7 @@ function plot_it() {
             .attr('d', d => line_scale(d))
             .attr('fill', 'none')
             .attr('stroke-width', 1)
-            .attr('stroke', '#800026');
+            .attr('stroke', coral);
         // .attr('stroke', d => d.color); TODO add color by different states
 
         // remove old series
@@ -448,8 +379,8 @@ function plot_it() {
         timePlot.append('g').attr('class', 'scale')
             .call(d3.axisLeft(y_scale).ticks(4))
             .append("text")
-            .attr("x", - padding)
-            .attr('y', - 6)
+            .attr("x", -padding)
+            .attr('y', -6)
             .attr("dy", "0.32em")
             .attr("fill", "#000")
             // .attr("font-weight", "bold")
@@ -499,9 +430,9 @@ function plot_it() {
         let update = shapePlot.selectAll(".bar")
             .data(selectedStateByShape);
 
-        update.enter().append("rect")
+        let bars = update.enter().append("rect")
             .attr('class', 'bar')
-            .attr("fill", "#800026")
+            .attr("fill", coral)
             .attr("x", d => x(d.key))
             .attr("y", d => y(d.value))
             .attr("width", x.bandwidth())
@@ -529,8 +460,8 @@ function plot_it() {
         shapePlot.append("g").attr('class', 'scale')
             .call(d3.axisLeft(y).ticks(5))
             .append("text")
-            .attr("x", - padding)
-            .attr('y', - 6)
+            .attr("x", -padding)
+            .attr('y', -6)
             .attr("dy", "0.32em")
             .attr("fill", "#000")
             // .attr("font-weight", "bold")
@@ -549,7 +480,7 @@ function plot_it() {
     }
 
     function plotDurationPlot(selectedState, selectedStateData) {
-        let selectedStateByDuration= d3.nest().key(function (d) {
+        let selectedStateByDuration = d3.nest().key(function (d) {
             return d.duration;
         }).rollup(function (leaves) {
             return leaves.length;
@@ -559,11 +490,11 @@ function plot_it() {
             return d.value;
         });
 
-        let amount= durationRange[1] / (viewAmount);
+        let amount = durationRange[1] / (viewAmount);
 
         // assume viewAmount is 3
         let durationGroup = [];
-        for(let i = 1; i < viewAmount; ++i) {
+        for (let i = 1; i < viewAmount; ++i) {
             durationGroup.push(parseInt(amount * i, 10));
         }
         // console.log(durationGroup);
@@ -572,21 +503,24 @@ function plot_it() {
             .domain(durationGroup)
             .range(["first", "second", "third"]);
 
-        dataByDuration= {"first":0,  "second": 0, "third": 0};
+        dataByDuration = {"first": 0, "second": 0, "third": 0};
         selectedStateByDuration.forEach(d => {
             dataByDuration[bars_scale(d.key)] += d.value;
         });
-        let firstKey =0 + "-" + durationGroup[0];
+        let firstKey = 0 + "-" + durationGroup[0];
         let secondKey = durationGroup[0] + "-" + durationGroup[1];
         let thirdKey = durationGroup[1] + "-" + durationRange[1];
-        let dataFinal = [{key: firstKey, value: dataByDuration.first}, {key: secondKey, value: dataByDuration.second}, {key: thirdKey, value: dataByDuration.third}]
+        let dataFinal = [{key: firstKey, value: dataByDuration.first}, {
+            key: secondKey,
+            value: dataByDuration.second
+        }, {key: thirdKey, value: dataByDuration.third}]
 
         // console.log(dataByDuration);
         // console.log(dataFinal);
 
         // set up the axes
         let x = d3.scaleBand().domain(dataFinal.map(d => d.key)).rangeRound([0, sub_info_width - 2 * padding]).padding(bar_padding),
-            y = d3.scaleLinear().domain( [0, d3.max(dataFinal, d => d.value)]).rangeRound([sub_info_height - 2 * padding, 0]);
+            y = d3.scaleLinear().domain([0, d3.max(dataFinal, d => d.value)]).rangeRound([sub_info_height - 2 * padding, 0]);
 
         durationPlot.selectAll('.bar2').remove();
 
@@ -596,7 +530,7 @@ function plot_it() {
 
         update.enter().append("rect")
             .attr('class', 'bar2')
-            .attr("fill", "#800026")
+            .attr("fill", coral)
             .attr("x", d => x(d.key))
             .attr("y", d => y(d.value))
             .attr("width", x.bandwidth())
@@ -624,8 +558,8 @@ function plot_it() {
         durationPlot.append("g").attr('class', 'scale')
             .call(d3.axisLeft(y).ticks(5))
             .append("text")
-            .attr("x", - padding)
-            .attr('y', - 6)
+            .attr("x", -padding)
+            .attr('y', -6)
             .attr("dy", "0.32em")
             .attr("fill", "#000")
             // .attr("font-weight", "bold")
@@ -645,10 +579,9 @@ function plot_it() {
     }
 
 
-
-    function tooltipHtml(name, stateCount){	/* function to create html content string in tooltip div. */
-        return "<h4>"+name+"</h4><table>"+
-            "<tr><td>Count</td><td>"+stateCount+"</td></tr>" +
+    function tooltipHtml(name, stateCount) {    /* function to create html content string in tooltip div. */
+        return "<h4>" + name + "</h4><table>" +
+            "<tr><td>Count</td><td>" + stateCount + "</td></tr>" +
             "</table>";
     }
 
@@ -656,7 +589,7 @@ function plot_it() {
     d3.selectAll('body').append('div').attr('id', 'tooltip'); // div to hold tooltip
 
     function drawLegend() {
-        function mouseOver(d){
+        function mouseOver(d) {
             // console.log(dataAggregated[d.properties.NAME]);
             d3.select("#tooltip").transition().duration(200).style("opacity", .9);
             let stateName = d.properties.NAME;
@@ -664,12 +597,13 @@ function plot_it() {
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         }
-        function mouseOut(){
+
+        function mouseOut() {
             d3.select("#tooltip").transition().duration(500).style("opacity", 0);
         }
 
         // hover and legend
-        states.on("mouseover", function(d){
+        states.on("mouseover", function (d) {
             mouseOver(d);
             if (pause === false) {
                 let selectedState = d.properties['NAME'];
@@ -691,6 +625,96 @@ function plot_it() {
         }).on("mouseout", mouseOut);
     }
 
+    createButton("Reset First Sub Plot", 4, function () {
+        TimePlotData = [];
+        pause = false;
+        // update_path.selectAll('path').remove();
+    }, coral);
 
+
+    function link() {
+        // link shape / year with dots button
+        //re-center button
+        createButton("Light", 5,
+            filterCircleByShape("light", orangish)
+            , lightYellowish, darkReddish, true);
+
+        createButton("Triangle", 6,
+            filterCircleByShape("triangle", orangish)
+            , lightYellowish, darkReddish, true);
+
+        createButton("Circle", 7,
+            filterCircleByShape("circle", orangish)
+            , lightYellowish, darkReddish, true);
+
+        createButton("1910 - 1980", 8,
+            filterCircleByTime(1910, 1980), lightYellowish, darkReddish, true);
+        createButton("1981 - 2005", 9,
+            filterCircleByTime(1981, 2005)
+            , lightYellowish, darkReddish, true);
+        createButton("2006 - 2014", 10,
+            filterCircleByTime(2006, 2014)
+            , lightYellowish, darkReddish, true);
+
+        createButton("Reset Coloring", 11, resetColoring, lightYellowish, darkReddish, true);
+
+    }
+
+
+    function filterCircleByShape(name, color) {
+        zoomZone.selectAll('circle')
+            .attr('fill-opacity', 0.1)
+            .attr('fill', lightYellowish);
+        let selectedCircles = zoomZone.selectAll('circle').filter(function (d, i) {
+            return d[2] === name;
+        }).attr('fill-opacity', 0.6)
+            .attr('fill', "#800000");
+    }
+
+    function filterCircleByTime(firstYear, SecondYear, color) {
+        zoomZone.selectAll('circle')
+            .attr('fill-opacity', 0.1)
+            .attr('fill', lightYellowish);
+        let selectedCircles = zoomZone.selectAll('circle').filter(function (d, i) {
+            return d[1] <= SecondYear && d[1] >= firstYear;
+        }).attr('fill-opacity', 0.6)
+            .attr('fill', "#800000");
+    }
+
+    // reset coloring
+    function resetColoring() {
+        zoomZone.selectAll('circle')
+            .attr('fill-opacity', 0.2)
+            .attr('fill', "#800000")
+        // .attr('stroke', '#ffffcc')
+        // .attr('stroke-width', 0.1)
+        // .attr('stroke-opacity', 0.1)
+    }
+
+    function createButton(name, index, onClick, color, textColor, link) {
+        left_svg.append('rect')
+            .attr('rx', 5)
+            .attr('ry', 5)
+            .attr('x', padding + 10)
+            .attr('y', index * padding + (index - 1) * 10)
+            .attr('height', 30)
+            .attr('width', 150)
+            .attr('fill', color)
+            .attr('class', 'detailedButton')
+            .attr('class', link ? 'link' : "notLinked")
+            // .attr('class', 'fade-in')
+            .style('cursor', "pointer")
+            .on("click", onClick);
+
+        left_svg.append('text').text(name)
+            .attr('x', padding * 3 + 25)
+            .attr('y', index * padding + (index - 1) * 10 + 20)
+            .attr('fill', textColor ? textColor : "white")
+            .attr("text-anchor", "middle")
+            .attr('class', 'detailedButton')
+            .style('cursor', "pointer")
+            .attr('class', link ? 'link' : "")
+            .on("click", onClick);
+    }
 }
 

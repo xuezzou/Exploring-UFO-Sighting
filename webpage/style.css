@@ -14,6 +14,12 @@ path:hover {
 
 .detailedButton {
     cursor: pointer;
+    /*fade - in behavior*/
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.7s;
 }
 
 body {
@@ -60,4 +66,24 @@ body {
 }
 #tooltip tr td:nth-child(2){
     text-align:center;
+}
+
+/* additional styling */
+.scale line,
+.scale path {
+    fill: none;
+    stroke: #aaa;
+    shape-rendering: crispEdges;
+}
+
+/*text {*/
+    /*text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;*/
+/*}*/
+
+.fade-in {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.7s;
 }
