@@ -216,7 +216,7 @@ function plot_it() {
         zoomZone.selectAll('.air_bases').remove();
     }
 
-    createButton("Re-center", 3, recenter, coral);
+    createButton("Re-center", 3, recenter, orangish);
 
     function recenter() {
         zoomZone.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
@@ -286,7 +286,7 @@ function plot_it() {
             .attr('d', d => line_scale(selectedStateByTime))
             .attr('fill', 'none')
             .attr('stroke-width', 1)
-            .attr('stroke', coral)
+            .attr('stroke', orangish)
         // .attr('stroke', d => d.color); TODO add color by different states
 
         // remove old series
@@ -397,7 +397,7 @@ function plot_it() {
             .attr('fill', 'none')
             .attr('stroke-width', 1)
             .attr('class', 'timeLine')
-            // .attr('stroke', coral)
+            // .attr('stroke', orangish)
             .attr('stroke', (d, i) => d3.schemeCategory10[i % 10]);
 
         // remove old series
@@ -522,7 +522,7 @@ function plot_it() {
 
         let bars = update.enter().append("rect")
             .attr('class', 'bar')
-            .attr("fill", coral)
+            .attr("fill", orangish)
             .attr("x", d => x(d.key))
             .attr("y", d => y(d.value))
             .attr("width", x.bandwidth())
@@ -714,7 +714,7 @@ function plot_it() {
 
         update.enter().append("rect")
             .attr('class', 'bar')
-            .attr("fill", coral)
+            .attr("fill", orangish)
             .attr("x", d => x(d.key))
             .attr("y", d => y(d.value))
             .attr("width", x.bandwidth())
@@ -940,7 +940,7 @@ function plot_it() {
         }).on("mouseout", mouseOut);
     }
 
-    createButton("Reset Clicking Plot", 4, function () {
+    createButton("Reset Subplot", 4, function () {
         TimePlotData = [];
         shapePlotData = [];
         selectedStateName = [];
@@ -953,9 +953,11 @@ function plot_it() {
         durationPlot.selectAll('.scale').remove();
         left_svg.selectAll('.legendTime').remove();
 
-    }, coral);
+    }, orangish);
 
     let darkmagenta = "#8B008B";
+    let peach = "#FFDAB9";
+    let lightPeach = "#FFEFD5";
 
     function link() {
         // link shape / year with dots button
@@ -963,48 +965,48 @@ function plot_it() {
         createButton("Light", 5, function () {
                 filterCircleByShape("light", darkmagenta)
             }
-            , lightYellowish, darkReddish, true);
+            , peach,darkReddish, true);
 
         createButton("Triangle", 6, function () {
                 filterCircleByShape("triangle", darkmagenta)
             }
-            , lightYellowish, darkReddish, true);
+            , peach,darkReddish, true);
 
         createButton("Circle", 7, function () {
                 filterCircleByShape("circle", darkmagenta)
             }
-            , lightYellowish, darkReddish, true);
+            , peach,darkReddish, true);
 
         createButton("1910 - 1980", 8, function () {
             filterCircleByTime(1910, 1990)
-        }, lightYellowish, darkReddish, true);
+        }, lightPeach,darkReddish, true);
         createButton("1981 - 2005", 9, function () {
             filterCircleByTime(1991, 2007)
-        }, lightYellowish, darkReddish, true);
+        }, lightPeach,darkReddish, true);
         createButton("2006 - 2014", 10, function () {
             filterCircleByTime(2008, 2014)
-        }, lightYellowish, darkReddish, true);
+        }, lightPeach,darkReddish, true);
 
-        createButton("Reset Coloring", 11, resetColoring, lightYellowish, darkReddish, true);
+        createButton("Reset Coloring", 11, resetColoring, "#FFE4B5", darkReddish, true);
 
     }
 
 
     function filterCircleByShape(name, color) {
-        zoomZone.selectAll('circle')
+        zoomZone.selectAll('.reports')
             .attr('fill-opacity', 0.1)
             .attr('fill', lightYellowish);
-        let selectedCircles = zoomZone.selectAll('circle').filter(function (d, i) {
+        let selectedCircles = zoomZone.selectAll('.reports').filter(function (d, i) {
             return d[2] === name;
         }).attr('fill-opacity', 0.6)
             .attr('fill', color);
     }
 
     function filterCircleByTime(firstYear, SecondYear, color) {
-        zoomZone.selectAll('circle')
+        zoomZone.selectAll('.reports')
             .attr('fill-opacity', 0.1)
             .attr('fill', lightYellowish);
-        let selectedCircles = zoomZone.selectAll('circle').filter(function (d, i) {
+        let selectedCircles = zoomZone.selectAll('.reports').filter(function (d, i) {
             return d[1] <= SecondYear && d[1] >= firstYear;
         }).attr('fill-opacity', 0.4)
             .attr('fill', darkmagenta);
