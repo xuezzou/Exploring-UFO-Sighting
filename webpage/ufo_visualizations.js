@@ -59,18 +59,23 @@ function plot_it() {
     //add info section
     all_svg.append('g').attr('id', 'info_plot').attr('transform', "translate(" + (map_width + padding) + "," + upper_padding + ")")
 
-    let wrapperSubplot1 = d3.selectAll('#info_plot').append('g').attr('id', 'subplot1').attr('transform', "translate(" + padding + "," + 0 + ")");
+    let wrapperSubplot1 = d3.select('#info_plot').append('g').attr('id', 'subplot1').attr('transform', "translate(" + padding + "," + 0 + ")");
     // let timePlot = d3.selectAll('#info_plot').append('g').attr('id', 'subplot1').attr('transform', "translate(" + padding + "," + 0 + ")")
 
     let timePlot = wrapperSubplot1.append('g').attr('transform', "translate(" + padding + "," + padding + ")");
+    let timeSVG = timePlot.append("svg")
+        .attr("width", sub_info_width - 2 * padding)
+        .attr("height", sub_info_height - 2 * padding);
 
-    d3.selectAll('#subplot1').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
+    // let timePlotRect = timePlot.append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width -2 * padding).attr('height', sub_info_height - 2 * padding).attr('fill', 'blue').attr('opacity', opacity)
 
-    let wrapperSubplot2 = d3.selectAll('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + sub_padding) + ")");
+    wrapperSubplot1.append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
+
+    let wrapperSubplot2 = d3.select('#info_plot').append('g').attr('id', 'subplot2').attr('transform', "translate(" + padding + "," + (sub_info_height + sub_padding) + ")");
     let shapePlot = wrapperSubplot2.append('g').attr('transform', "translate(" + padding + "," + padding + ")");
     d3.selectAll('#subplot2').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
-    let wrapperSubplot3 = d3.selectAll('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 2 * sub_padding) + ")");
+    let wrapperSubplot3 = d3.select('#info_plot').append('g').attr('id', 'subplot3').attr('transform', "translate(" + padding + "," + (2 * sub_info_height + 2 * sub_padding) + ")");
     let durationPlot = wrapperSubplot3.append('g').attr('transform', "translate(" + padding + "," + padding + ")");
     d3.selectAll('#subplot3').append('rect').attr('x', 0).attr('y', 0).attr('width', sub_info_width).attr('height', sub_info_height).attr('fill', 'blue').attr('opacity', opacity)
 
@@ -88,6 +93,7 @@ function plot_it() {
     //draw states and color states
     let dataAggregated = {}; // dataAggregated holds the value of the count
 
+    let maxCount = 0;
     let states = zoomZone.selectAll(".state")
         .data(map_data.features).enter().append("path").attr("class", "state").attr("d", geo_generator)
         .style("fill", function (d) {
@@ -97,6 +103,7 @@ function plot_it() {
                 let coef = 0;
                 if (element) {
                     coef = element.values.length;
+                    maxCount = Math.max(maxCount, coef);
                 }
                 dataAggregated[d.properties['NAME']] = coef;
                 return d3.interpolate(lightYellowish, darkReddish)(coef / 4000);
@@ -274,7 +281,7 @@ function plot_it() {
             .attr('d', d => line_scale(selectedStateByTime))
             .attr('fill', 'none')
             .attr('stroke-width', 1)
-            .attr('stroke', coral);
+            .attr('stroke', coral)
         // .attr('stroke', d => d.color); TODO add color by different states
 
         // remove old series
@@ -316,6 +323,7 @@ function plot_it() {
 
 
     let TimePlotData = [];
+    let selectedStateName = [];
 
     function plotSubTimePlot(selectedState, selectedStateData) {
 
@@ -327,6 +335,7 @@ function plot_it() {
 
         // timePlot.remove();
         TimePlotData.push(selectedStateByTime);
+        selectedStateName.push(selectedState);
 
         let yearRange = [], valueRange = [];
         TimePlotData.forEach(each => {
@@ -361,7 +370,7 @@ function plot_it() {
         let line_scale = d3.line().x(d => x_scale(parseInt(d.key))).y(d => y_scale(d.value));
 
         // data join
-        update_path = timePlot.selectAll('path').data(TimePlotData);
+        let update_path = timeSVG.selectAll('path').data(TimePlotData);
         // console.log(selectedStateByTime);
 
         // add new series
@@ -369,16 +378,20 @@ function plot_it() {
             .attr('d', d => line_scale(d))
             .attr('fill', 'none')
             .attr('stroke-width', 1)
-            .attr('stroke', coral);
-        // .attr('stroke', d => d.color); TODO add color by different states
+            .attr('class', 'timeLine')
+            // .attr('stroke', coral)
+            .attr('stroke', (d, i) => d3.schemeCategory10[i % 10]);
 
         // remove old series
         // update_path.remove();
         timePlot.selectAll(".scale").remove();
 
-        timePlot.append('g').attr('class', 'scale')
-            .call(d3.axisLeft(y_scale).ticks(4))
-            .append("text")
+        let y_axis = d3.axisLeft(y_scale);
+        let x_axis = d3.axisBottom(x_scale);
+
+        let y_drawed_axis = timePlot.append('g').attr('class', 'scale')
+            .call(y_axis.ticks(4));
+        y_drawed_axis.append("text")
             .attr("x", -padding)
             .attr('y', -6)
             .attr("dy", "0.32em")
@@ -387,16 +400,75 @@ function plot_it() {
             .attr("text-anchor", "start")
             .text("Count");
 
-        timePlot.append('g').attr('class', 'scale')
+        let x_drawed_axis = timePlot.append('g').attr('class', 'scale')
             .attr('transform', 'translate(' + 0 + ',' + (sub_info_height - 2 * padding) + ')')
-            .call(d3.axisBottom(x_scale).ticks(3, "d"))
-            .append("text")
+            .call(x_axis.ticks(3, "d"));
+        x_drawed_axis.append("text")
             .attr("x", sub_info_width - 2 * padding + 4)
             .attr("dy", "0.32em")
             .attr("fill", "#000")
             // .attr("font-weight", "bold")
             .attr("text-anchor", "start")
             .text("Year");
+
+        // enable zooming
+        // Zoom Function
+        let zoomSubTimePlot = d3.zoom()
+            .on("zoom", zoomFunction);
+
+
+        wrapperSubplot1.call(zoomSubTimePlot);
+
+        function zoomFunction() {
+            // create new scale ojects based on event
+            let new_xScale = d3.event.transform.rescaleX(x_scale);
+            let new_yScale = d3.event.transform.rescaleY(y_scale);
+
+            // update axes
+            x_drawed_axis.call(x_axis.scale(new_xScale));
+            y_drawed_axis.call(y_axis.scale(new_yScale));
+
+            // update path
+            timeSVG.selectAll('.timeLine').attr("transform", d3.event.transform);
+        };
+
+        // add legend
+        let colorDataLegend = d3.schemeCategory10.slice(0, selectedStateName.length);
+        let color_scale_legend_timePlot = d3.scaleOrdinal()
+            .range(colorDataLegend) // purple ish color
+            .domain(selectedStateName);
+
+        // draw the legend
+        let legendTimePlot = left_svg.append("g")
+            .attr("text-anchor", "end")
+            .selectAll("g")
+            .data(selectedStateName)
+            .enter().append("g")
+            .attr("transform", (d, i) => "translate(0," + i * 20 + ")")
+            .attr('class', 'legendTime');
+
+        left_svg.append('text')
+            .attr('y',  1 * padding + 9.5 - 20)
+            .attr("x", map_width - 24 - 1.5 * padding)
+            .attr("text-anchor", "end")
+            .attr("dy", "0.32em")
+            .text("State Name")
+            .attr('font-weight', 'bold')
+            .attr('class', 'legendTime');
+
+        // set up the remark of color and corresponding count
+        legendTimePlot.append("rect")
+            .attr('y',  1 * padding)
+            .attr("x", map_width - 19 - 1.5 * padding)
+            .attr("width", 19)
+            .attr("height", 19)
+            .attr("fill", color_scale_legend_timePlot);
+
+        legendTimePlot.append("text")
+            .attr('y', 1 * padding + 9.5)
+            .attr("x", map_width - 24 - 1.5 * padding)
+            .attr("dy", "0.32em")
+            .text(d => (d));
     }
 
     // variables for bar chart
@@ -627,8 +699,12 @@ function plot_it() {
 
     createButton("Reset First Sub Plot", 4, function () {
         TimePlotData = [];
+        selectedStateName = [];
         pause = false;
-        // update_path.selectAll('path').remove();
+        timePlot.selectAll('.timeLine').remove();
+        timePlot.selectAll('.scale').remove();
+        left_svg.selectAll('.legendTime').remove();
+
     }, coral);
 
 
@@ -716,5 +792,43 @@ function plot_it() {
             .attr('class', link ? 'link' : "")
             .on("click", onClick);
     }
+
+    let textDataLegend = [0, maxCount / 16, maxCount / 8, maxCount / 4, maxCount / 2, maxCount];
+    let colorDataLegend = textDataLegend.map(each => {
+        return d3.interpolate(lightYellowish, darkReddish)(each / 4000);
+    });
+    let color_scale_legend = d3.scaleOrdinal()
+        .range(colorDataLegend) // purple ish color
+        .domain(textDataLegend);
+
+    // draw the legend
+    let legend = left_svg.append("g")
+        .attr("text-anchor", "end")
+        .selectAll("g")
+        .data(textDataLegend)
+        .enter().append("g")
+        .attr("transform", (d, i) => "translate(0," + i * 20 + ")");
+
+    left_svg.append('text')
+        .attr('y', map_height - 5 * padding + 9.5 - 20)
+        .attr("x", map_width - 24 - 1.5 * padding)
+        .attr("text-anchor", "end")
+        .attr("dy", "0.32em")
+        .attr('font-weight', 'bold')
+        .text("Count");
+
+    // set up the remark of color and corresponding count
+    legend.append("rect")
+        .attr('y', map_height - 5 * padding)
+        .attr("x", map_width - 19 - 1.5 * padding)
+        .attr("width", 19)
+        .attr("height", 19)
+        .attr("fill", color_scale_legend);
+
+    legend.append("text")
+        .attr('y', map_height - 5 * padding + 9.5)
+        .attr("x", map_width - 24 - 1.5 * padding)
+        .attr("dy", "0.32em")
+        .text(d => (d));
 }
 
