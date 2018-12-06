@@ -26,7 +26,7 @@ body {
     font-family: sans-serif;
 }
 
-/* for legend*/
+/* for tooltip */
 /* Reference: http://bl.ocks.org/NPashaP/a74faf20b492ad377312 */
 
 #tooltip {
@@ -86,4 +86,8 @@ body {
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
     animation-duration: 0.7s;
+}
+
+.scale text {
+    font-size: 8px;
 }

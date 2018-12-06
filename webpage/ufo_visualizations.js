@@ -240,6 +240,10 @@ function plot_it() {
         if (!selectedStateData) {
             return;
         }
+        // disallow clicking the state that is already in display
+        if(selectedStateName.find( e => e === selectedState)) {
+            return;
+        }
 
         plotSubTimePlot(selectedState, selectedStateData);
         plotSubShapePlot(selectedState, selectedStateData);
@@ -324,6 +328,9 @@ function plot_it() {
 
     let TimePlotData = [];
     let selectedStateName = [];
+    let shapePlotData = [];
+    let durationPlotData = [];
+    let MAX_STATE = 3;
 
     function plotSubTimePlot(selectedState, selectedStateData) {
 
@@ -334,8 +341,17 @@ function plot_it() {
         }).entries(selectedStateData.values);
 
         // timePlot.remove();
+        // make sure different from last one
+
+        // can only have this part but without limitation of MAX_STATE number
         TimePlotData.push(selectedStateByTime);
         selectedStateName.push(selectedState);
+
+        if (TimePlotData.length > MAX_STATE) {
+            TimePlotData = TimePlotData.slice(1);
+            selectedStateName = selectedStateName.slice(1);
+        }
+
 
         let yearRange = [], valueRange = [];
         TimePlotData.forEach(each => {
@@ -360,6 +376,7 @@ function plot_it() {
         })];
 
         timePlot.selectAll('path').remove();
+        left_svg.selectAll('.legendTime').remove();
 
 
         // year_range = []; can set year_range scale same here
@@ -448,7 +465,7 @@ function plot_it() {
             .attr('class', 'legendTime');
 
         left_svg.append('text')
-            .attr('y',  1 * padding + 9.5 - 20)
+            .attr('y', 2 * padding + 9.5 - 20)
             .attr("x", map_width - 24 - 1.5 * padding)
             .attr("text-anchor", "end")
             .attr("dy", "0.32em")
@@ -458,24 +475,24 @@ function plot_it() {
 
         // set up the remark of color and corresponding count
         legendTimePlot.append("rect")
-            .attr('y',  1 * padding)
+            .attr('y', 2 * padding)
             .attr("x", map_width - 19 - 1.5 * padding)
             .attr("width", 19)
             .attr("height", 19)
             .attr("fill", color_scale_legend_timePlot);
 
         legendTimePlot.append("text")
-            .attr('y', 1 * padding + 9.5)
+            .attr('y', 2 * padding + 9.5)
             .attr("x", map_width - 24 - 1.5 * padding)
             .attr("dy", "0.32em")
             .text(d => (d));
     }
 
     // variables for bar chart
-    let viewAmount = 3;
+    let viewAmount = 4;
     let bar_padding = 0.2;
 
-    function plotSubShapePlot(selectedState, selectedStateData) {
+    function plotSubShapePlotHover(selectedState, selectedStateData) {
 
         // notes the number of categories in bar chart
 
@@ -551,7 +568,101 @@ function plot_it() {
 
     }
 
-    function plotDurationPlot(selectedState, selectedStateData) {
+    function plotSubShapePlot(selectedState, selectedStateData) {
+
+        shapePlotData.push(selectedStateData);
+
+        if (shapePlotData.length > MAX_STATE) {
+            shapePlotData = shapePlotData.slice(1);
+        }
+
+        let nestedDataSource = [];
+        for (let i = 0; i < shapePlotData.length; ++i) {
+            nestedDataSource = nestedDataSource.concat(shapePlotData[i].values);
+        }
+        // selectedStateByShape = selectedStateByShape.slice(0, viewAmount);
+
+        let nestedData = d3.nest().key(function (d) {
+            return d.shape
+        }).key(function (d) {
+            return d.state;
+        }).rollup(function (leaves) {
+                return {"length": leaves.length}
+            }
+        ).entries(nestedDataSource);
+
+        nestedData.forEach(each => {
+            let total = 0;
+            each.values.forEach(eachValue => {
+                total += eachValue.value.length;
+                each[eachValue.key] = eachValue.value.length;
+            });
+            each.total = total;
+        });
+        nestedData.sort(function (a, b) {
+            return b.total - a.total;
+        });
+
+        nestedData = nestedData.slice(0, viewAmount);
+
+        shapePlot.selectAll('.bar').remove();
+        shapePlot.selectAll('.scale').remove();
+
+        // set up scales and axes
+        let x = d3.scaleBand()
+            .rangeRound([0, sub_info_width -2 * padding])
+            .padding(bar_padding)
+            // .paddingInner(0.08).paddingOuter(0.3)
+            // .align(0.1)
+            .domain(nestedData.map(d => d.key));
+
+        let y = d3.scaleLinear()
+            .rangeRound([sub_info_height - 2 * padding, 0])
+            .domain([0, d3.max(nestedData, d => d.total)]).nice();
+
+        // draw the stacked bars
+        shapePlot.append("g")
+            .selectAll("g")
+            .data(d3.stack().keys(selectedStateName)(nestedData))
+            .enter().append("g")
+            .attr("fill", (d, i) => d3.schemeCategory10[i])
+            .selectAll("rect")
+            .data(d => d)
+            .enter().append("rect")
+            .attr("x", d => x(d.data.key))
+            .attr("y", d => y(d[1]))
+            .attr("height", d => y(d[0]) - y(d[1]))
+            .attr("width", x.bandwidth())
+            .attr('class', 'bar');
+
+        shapePlot.append("g").attr('class', 'scale')
+            .attr("transform", "translate(0," + (sub_info_height - 2 * padding) + ")")
+            // .style('font-size', 8)
+            .call(d3.axisBottom(x))
+            .append("text")
+            .attr("x", sub_info_width - 2 * padding + 2)
+            .attr("dy", "0.32em")
+            .attr("fill", "#000")
+            // .attr("font-weight", "bold")
+            .attr("text-anchor", "start")
+            .text("Shape");
+
+        shapePlot.append("g").attr('class', 'scale')
+            .call(d3.axisLeft(y).ticks(5))
+            .append("text")
+            .attr("x", -padding)
+            .attr('y', -6)
+            .attr("dy", "0.32em")
+            .attr("fill", "#000")
+            // .attr("font-weight", "bold")
+            .attr("text-anchor", "start")
+            .text("Count");
+
+    }
+
+    let viewAmountDur = 3;
+
+    function plotDurationPlotHover(selectedState, selectedStateData) {
         let selectedStateByDuration = d3.nest().key(function (d) {
             return d.duration;
         }).rollup(function (leaves) {
@@ -562,11 +673,11 @@ function plot_it() {
             return d.value;
         });
 
-        let amount = durationRange[1] / (viewAmount);
+        let amount = durationRange[1] / (viewAmountDur);
 
         // assume viewAmount is 3
         let durationGroup = [];
-        for (let i = 1; i < viewAmount; ++i) {
+        for (let i = 1; i < viewAmountDur; ++i) {
             durationGroup.push(parseInt(amount * i, 10));
         }
         // console.log(durationGroup);
@@ -585,7 +696,7 @@ function plot_it() {
         let dataFinal = [{key: firstKey, value: dataByDuration.first}, {
             key: secondKey,
             value: dataByDuration.second
-        }, {key: thirdKey, value: dataByDuration.third}]
+        }, {key: thirdKey, value: dataByDuration.third}];
 
         // console.log(dataByDuration);
         // console.log(dataFinal);
@@ -594,14 +705,14 @@ function plot_it() {
         let x = d3.scaleBand().domain(dataFinal.map(d => d.key)).rangeRound([0, sub_info_width - 2 * padding]).padding(bar_padding),
             y = d3.scaleLinear().domain([0, d3.max(dataFinal, d => d.value)]).rangeRound([sub_info_height - 2 * padding, 0]);
 
-        durationPlot.selectAll('.bar2').remove();
+        durationPlot.selectAll('.bar').remove();
 
         // // draw the plot/rects
-        let update = durationPlot.selectAll(".bar2")
+        let update = durationPlot.selectAll(".bar")
             .data(dataFinal);
 
         update.enter().append("rect")
-            .attr('class', 'bar2')
+            .attr('class', 'bar')
             .attr("fill", coral)
             .attr("x", d => x(d.key))
             .attr("y", d => y(d.value))
@@ -650,6 +761,137 @@ function plot_it() {
 
     }
 
+    function plotDurationPlot(selectedState, selectedStateData) {
+
+        durationPlotData.push(selectedStateData);
+
+        if (durationPlotData.length > MAX_STATE) {
+            durationPlotData = durationPlotData.slice(1);
+        }
+
+        let valueRange = [];
+        durationPlotData.forEach(each => {
+            let curValRange = d3.extent(each.values, function (d) {
+                return d.duration;
+            });
+            valueRange.push(curValRange);
+        });
+
+        let finalValRange = [d3.min(valueRange, function (d) {
+            return d[0];
+        }), d3.max(valueRange, function (d) {
+            return d[1];
+        })];
+
+        let nestedDataSourceDur = [];
+        for (let i = 0; i < durationPlotData.length; ++i) {
+            nestedDataSourceDur = nestedDataSourceDur.concat(durationPlotData[i].values);
+        }
+
+        let maxDur = finalValRange[1];
+
+        let amount = maxDur / (viewAmountDur);
+
+        let durationGroup = [];
+        for (let i = 1; i < viewAmountDur; ++i) {
+            durationGroup.push(parseInt(amount * i, 10));
+        }
+
+        let firstKey = 0 + "-" + durationGroup[0];
+        let secondKey = durationGroup[0] + "-" + durationGroup[1];
+        let thirdKey = durationGroup[1] + "-" + maxDur;
+
+        let bars_scale = d3.scaleThreshold()
+            .domain(durationGroup)
+            .range([firstKey, secondKey, thirdKey]);
+
+
+        let nestedDataDur = d3.nest().key(function (d) {
+            return bars_scale(d.duration);
+        }).key(function (d) {
+            return d.state;
+        }).rollup(function (leaves) {
+                return {"length": leaves.length}
+            }
+        ).entries(nestedDataSourceDur);
+
+        nestedDataDur.forEach(each => {
+            let total = 0;
+            each.values.forEach(eachValue => {
+                total += eachValue.value.length;
+                each[eachValue.key] = eachValue.value.length;
+            });
+            each.total = total;
+        });
+
+        console.log(nestedDataDur);
+
+
+        nestedDataDur.sort(function (a, b) {
+            if(a.key === firstKey) {
+                return 1;
+            }
+            if(a.key === secondKey) {
+                return 2;
+            }
+            return 3;
+        });
+
+        durationPlot.selectAll('.bar').remove();
+        durationPlot.selectAll('.scale').remove();
+
+        // set up scales and axes
+        let x = d3.scaleBand()
+            .rangeRound([0, sub_info_width -2 * padding])
+            .padding(bar_padding)
+            // .paddingInner(0.08).paddingOuter(0.3)
+            // .align(0.1)
+            .domain(nestedDataDur.map(d => d.key));
+
+        let y = d3.scaleLinear()
+            .rangeRound([sub_info_height - 2 * padding, 0])
+            .domain([0, d3.max(nestedDataDur, d => d.total)]).nice();
+
+        // draw the stacked bars
+        durationPlot.append("g")
+            .selectAll("g")
+            .data(d3.stack().keys(selectedStateName)(nestedDataDur))
+            .enter().append("g")
+            .attr("fill", (d, i) => d3.schemeCategory10[i])
+            .selectAll("rect")
+            .data(d => d)
+            .enter().append("rect")
+            .attr("x", d => x(d.data.key))
+            .attr("y", d => y(d[1]))
+            .attr("height", d => y(d[0]) - y(d[1]))
+            .attr("width", x.bandwidth())
+            .attr('class', 'bar');
+
+        durationPlot.append("g").attr('class', 'scale')
+            .attr("transform", "translate(0," + (sub_info_height - 2 * padding) + ")")
+            // .style('font-size', 8)
+            .call(d3.axisBottom(x))
+            .append("text")
+            .attr("x", sub_info_width - 2 * padding + 2)
+            .attr("dy", "0.32em")
+            .attr("fill", "#000")
+            // .attr("font-weight", "bold")
+            .attr("text-anchor", "start")
+            .text("Duration(s)");
+
+        durationPlot.append("g").attr('class', 'scale')
+            .call(d3.axisLeft(y).ticks(5))
+            .append("text")
+            .attr("x", -padding)
+            .attr('y', -6)
+            .attr("dy", "0.32em")
+            .attr("fill", "#000")
+            // .attr("font-weight", "bold")
+            .attr("text-anchor", "start")
+            .text("Count");
+
+    }
+
 
     function tooltipHtml(name, stateCount) {    /* function to create html content string in tooltip div. */
         return "<h4>" + name + "</h4><table>" +
@@ -690,19 +932,24 @@ function plot_it() {
 
                 // d3.select(this).style('cursor', 'hand');
                 plotSubTimePlotHover(selectedState, selectedStateData);
-                plotSubShapePlot(selectedState, selectedStateData);
-                plotDurationPlot(selectedState, selectedStateData);
+                plotSubShapePlotHover(selectedState, selectedStateData);
+                plotDurationPlotHover(selectedState, selectedStateData);
             }
 
         }).on("mouseout", mouseOut);
     }
 
-    createButton("Reset First Sub Plot", 4, function () {
+    createButton("Reset Clicking Plot", 4, function () {
         TimePlotData = [];
+        shapePlotData = [];
         selectedStateName = [];
         pause = false;
         timePlot.selectAll('.timeLine').remove();
         timePlot.selectAll('.scale').remove();
+        shapePlot.selectAll('.bar').remove();
+        shapePlot.selectAll('.scale').remove();
+        durationPlot.selectAll('.bar').remove();
+        durationPlot.selectAll('.scale').remove();
         left_svg.selectAll('.legendTime').remove();
 
     }, coral);
