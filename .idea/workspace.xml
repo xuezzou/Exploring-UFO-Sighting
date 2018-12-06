@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="471cdf38-dc6b-4031-9661-a966ebfd0173" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Vis-Project-fall-2018.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/webpage/ufo_visualizations.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpage/ufo_visualizations.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -17,45 +22,46 @@
     <session id="141485335">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="7" />
+          <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="3" />
-          <entry key="project.open.time.3" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.open.time.15" value="1" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.opened" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="css" value="1" />
-          <entry key="html" value="2" />
-          <entry key="js" value="4" />
-          <entry key="json" value="1" />
-          <entry key="md" value="1" />
+          <entry key="css" value="2" />
+          <entry key="csv" value="1" />
+          <entry key="html" value="1" />
+          <entry key="js" value="5" />
           <entry key="py" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSS" value="1" />
-          <entry key="HTML" value="2" />
-          <entry key="JSON" value="1" />
-          <entry key="JavaScript" value="4" />
+          <entry key="CSS" value="2" />
+          <entry key="HTML" value="1" />
+          <entry key="JavaScript" value="5" />
           <entry key="PLAIN_TEXT" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="css" value="90" />
-          <entry key="html" value="56" />
-          <entry key="js" value="4383" />
-          <entry key="txt" value="94" />
+          <entry key="css" value="184" />
+          <entry key="html" value="86" />
+          <entry key="js" value="8751" />
+          <entry key="txt" value="314" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="CSS" value="90" />
-          <entry key="HTML" value="56" />
-          <entry key="JavaScript" value="4383" />
-          <entry key="PLAIN_TEXT" value="94" />
+          <entry key="CSS" value="184" />
+          <entry key="HTML" value="86" />
+          <entry key="JavaScript" value="8751" />
+          <entry key="PLAIN_TEXT" value="314" />
         </counts>
       </usages-collector>
     </session>
@@ -64,14 +70,18 @@
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" selection-start-line="2" selection-end-line="2" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/webpage/ufo_visualizations.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="74" column="16" lean-forward="true" selection-start-line="74" selection-start-column="16" selection-end-line="74" selection-end-column="16" />
+            <state relative-caret-position="216">
+              <caret line="1000" selection-start-line="1000" selection-end-line="1000" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -80,19 +90,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
+        <entry file="file://$PROJECT_DIR$/webpage/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="60" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="60" />
+            <state relative-caret-position="1410">
+              <caret line="94" column="2" selection-start-line="94" selection-start-column="2" selection-end-line="94" selection-end-column="2" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webpage/style.css">
+        <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" selection-start-line="2" selection-end-line="2" />
+            <state relative-caret-position="240">
+              <caret line="16" column="76" lean-forward="true" selection-start-line="16" selection-start-column="76" selection-end-line="16" selection-end-column="76" />
             </state>
           </provider>
         </entry>
@@ -108,7 +118,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>topo</find>
+      <find>circles</find>
+      <find>createB</find>
+      <find>zoomZone.selectAll</find>
+      <find>1937</find>
+      <find>#8000</find>
+      <find>resetColoring</find>
+      <find>darkReddish</find>
+      <find>removeC</find>
+      <find>o</find>
+      <find>plotSubTime</find>
+      <find>zoom</find>
+      <find>timePlot</find>
+      <find>timePlo</find>
+      <find>timeLines</find>
+      <find>timeLine</find>
+      <find>timeL</find>
+      <find>view</find>
+      <find>legend</find>
+      <find>TimePlot</find>
+      <find>click</find>
+      <find>plotSub</find>
+      <find>plotSubShapeP</find>
+      <find>plotSubShapePlot</find>
+      <find>bar</find>
+      <find>light</find>
+      <find>d3.event</find>
+      <find>createButton</find>
+      <find>plot_</find>
+      <find>plot</find>
+      <find>link</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -117,6 +156,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/data/Air Base Pos.csv" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/webpage/style.css" />
         <option value="$PROJECT_DIR$/webpage/ufo_visualizations.js" />
@@ -130,11 +170,12 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="163" />
-    <option name="y" value="32" />
-    <option name="width" value="1061" />
-    <option name="height" value="821" />
+    <option name="x" value="172" />
+    <option name="y" value="23" />
+    <option name="width" value="1247" />
+    <option name="height" value="807" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -155,6 +196,11 @@
             <path>
               <item name="Vis-Project-fall-2018" type="b2602c69:ProjectViewProjectNode" />
               <item name="Vis-Project-fall-2018" type="462c0819:PsiDirectoryNode" />
+              <item name="documentation" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Vis-Project-fall-2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Vis-Project-fall-2018" type="462c0819:PsiDirectoryNode" />
               <item name="webpage" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -166,10 +212,13 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/webpage" />
+      <recent name="$PROJECT_DIR$/documentation" />
+      <recent name="$PROJECT_DIR$/data" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -197,46 +246,91 @@
       <workItem from="1542121401940" duration="11762000" />
       <workItem from="1542585226362" duration="10845000" />
       <workItem from="1543417368603" duration="605000" />
+      <workItem from="1543884137731" duration="17432000" />
+      <workItem from="1543970696671" duration="9913000" />
+      <workItem from="1544021857371" duration="1152000" />
+      <workItem from="1544025636916" duration="2069000" />
+      <workItem from="1544041547321" duration="14812000" />
+      <workItem from="1544070995398" duration="336000" />
+      <workItem from="1544105520038" duration="8149000" />
+      <workItem from="1544119024180" duration="2628000" />
     </task>
-    <task id="LOCAL-00001" summary="added color mapping">
-      <created>1542211215280</created>
+    <task id="LOCAL-00001" summary="try commit">
+      <created>1543971450116</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1542211215280</updated>
+      <updated>1543971450116</updated>
     </task>
-    <task id="LOCAL-00002" summary="added sub-plot1 based on click">
-      <created>1542240461557</created>
+    <task id="LOCAL-00002" summary="add third plot and legend; update first plot">
+      <created>1543991460501</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1542240461557</updated>
+      <updated>1543991460501</updated>
     </task>
-    <task id="LOCAL-00003" summary="added sub-plot1 based on click, add css effects">
-      <created>1542873621618</created>
+    <task id="LOCAL-00003" summary="update third plot">
+      <created>1544022363872</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1542873621618</updated>
+      <updated>1544022363872</updated>
     </task>
-    <task id="LOCAL-00004" summary="added subplot2">
-      <created>1542880779581</created>
+    <task id="LOCAL-00004" summary="fix firt sub plot">
+      <created>1544022525162</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1542880779581</updated>
+      <updated>1544022525162</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add buttons on the left to show more detailed views of circles; such as in shape and years">
+      <created>1544050874631</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1544050874631</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add first plot with legend and color, add legend for the whole plot">
+      <created>1544070767501</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1544070767501</updated>
+    </task>
+    <task id="LOCAL-00007" summary="added bar charts and interaction /comparison between states">
+      <created>1544117687434</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1544117687434</updated>
+    </task>
+    <task id="LOCAL-00008" summary="added title">
+      <created>1544119013674</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1544119013674</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23971000" />
+    <option name="totallyTimeSpent" value="39099000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="171" y="23" width="1061" height="821" extended-state="0" />
+    <frame x="172" y="23" width="1247" height="807" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24903846" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21451876" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -245,15 +339,34 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32867134" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32921812" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32921812" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32867134" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32867134" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21451876" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32867134" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" visible="true" weight="0.32867134" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32867134" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -266,40 +379,65 @@
     <MESSAGE value="added sub-plot1 based on click" />
     <MESSAGE value="added sub-plot1 based on click, add css effects" />
     <MESSAGE value="added subplot2" />
-    <option name="LAST_COMMIT_MESSAGE" value="added subplot2" />
+    <MESSAGE value="change format of air base pos .csv" />
+    <MESSAGE value="try commit" />
+    <MESSAGE value="add third plot and legend; update first plot" />
+    <MESSAGE value="update third plot" />
+    <MESSAGE value="fix firt sub plot" />
+    <MESSAGE value="add buttons on the left to show more detailed views of circles; such as in shape and years" />
+    <MESSAGE value="add first plot with legend and color, add legend for the whole plot" />
+    <MESSAGE value="added bar charts and interaction /comparison between states" />
+    <MESSAGE value="added title" />
+    <option name="LAST_COMMIT_MESSAGE" value="added title" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/webpage/d3.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/cleanup.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webpage/uStates.js" />
-    <entry file="file://$PROJECT_DIR$/webpage/us-geo.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$PROJECT_DIR$/data/ufo_data_cleaned.csv">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="60" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="60" />
+        <state relative-caret-position="123">
+          <caret line="39679" column="4" selection-start-line="39679" selection-end-line="39679" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webpage/style.css">
+    <entry file="file://$PROJECT_DIR$/data/cleanup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1185">
+          <caret line="79" column="23" selection-start-line="79" selection-start-column="23" selection-end-line="79" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/untitled folder/ufo_visualizations.js" />
+    <entry file="file://$PROJECT_DIR$/webpage/d3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/webpage/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1410">
+          <caret line="94" column="2" selection-start-line="94" selection-start-column="2" selection-end-line="94" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="76" lean-forward="true" selection-start-line="16" selection-start-column="76" selection-end-line="16" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/webpage/ufo_visualizations.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="74" column="16" lean-forward="true" selection-start-line="74" selection-start-column="16" selection-end-line="74" selection-end-column="16" />
+        <state relative-caret-position="216">
+          <caret line="1000" selection-start-line="1000" selection-end-line="1000" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

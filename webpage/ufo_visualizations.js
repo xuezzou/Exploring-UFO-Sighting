@@ -167,6 +167,7 @@ function plot_it() {
     }
 
 
+    let view_air_bases = false;
     // add Show Air Base button/click effect
     createButton("Show Air Bases", 2, function () {
         if (!view_air_bases) {
@@ -241,7 +242,7 @@ function plot_it() {
             return;
         }
         // disallow clicking the state that is already in display
-        if(selectedStateName.find( e => e === selectedState)) {
+        if (selectedStateName.find(e => e === selectedState)) {
             return;
         }
 
@@ -610,7 +611,7 @@ function plot_it() {
 
         // set up scales and axes
         let x = d3.scaleBand()
-            .rangeRound([0, sub_info_width -2 * padding])
+            .rangeRound([0, sub_info_width - 2 * padding])
             .padding(bar_padding)
             // .paddingInner(0.08).paddingOuter(0.3)
             // .align(0.1)
@@ -828,10 +829,10 @@ function plot_it() {
 
 
         nestedDataDur.sort(function (a, b) {
-            if(a.key === firstKey) {
+            if (a.key === firstKey) {
                 return 1;
             }
-            if(a.key === secondKey) {
+            if (a.key === secondKey) {
                 return 2;
             }
             return 3;
@@ -842,7 +843,7 @@ function plot_it() {
 
         // set up scales and axes
         let x = d3.scaleBand()
-            .rangeRound([0, sub_info_width -2 * padding])
+            .rangeRound([0, sub_info_width - 2 * padding])
             .padding(bar_padding)
             // .paddingInner(0.08).paddingOuter(0.3)
             // .align(0.1)
@@ -954,30 +955,35 @@ function plot_it() {
 
     }, coral);
 
+    let darkmagenta = "#8B008B";
 
     function link() {
         // link shape / year with dots button
         //re-center button
-        createButton("Light", 5,
-            filterCircleByShape("light", orangish)
+        createButton("Light", 5, function () {
+                filterCircleByShape("light", darkmagenta)
+            }
             , lightYellowish, darkReddish, true);
 
-        createButton("Triangle", 6,
-            filterCircleByShape("triangle", orangish)
+        createButton("Triangle", 6, function () {
+                filterCircleByShape("triangle", darkmagenta)
+            }
             , lightYellowish, darkReddish, true);
 
-        createButton("Circle", 7,
-            filterCircleByShape("circle", orangish)
+        createButton("Circle", 7, function () {
+                filterCircleByShape("circle", darkmagenta)
+            }
             , lightYellowish, darkReddish, true);
 
-        createButton("1910 - 1980", 8,
-            filterCircleByTime(1910, 1980), lightYellowish, darkReddish, true);
-        createButton("1981 - 2005", 9,
-            filterCircleByTime(1981, 2005)
-            , lightYellowish, darkReddish, true);
-        createButton("2006 - 2014", 10,
-            filterCircleByTime(2006, 2014)
-            , lightYellowish, darkReddish, true);
+        createButton("1910 - 1980", 8, function () {
+            filterCircleByTime(1910, 1990)
+        }, lightYellowish, darkReddish, true);
+        createButton("1981 - 2005", 9, function () {
+            filterCircleByTime(1991, 2007)
+        }, lightYellowish, darkReddish, true);
+        createButton("2006 - 2014", 10, function () {
+            filterCircleByTime(2008, 2014)
+        }, lightYellowish, darkReddish, true);
 
         createButton("Reset Coloring", 11, resetColoring, lightYellowish, darkReddish, true);
 
@@ -991,7 +997,7 @@ function plot_it() {
         let selectedCircles = zoomZone.selectAll('circle').filter(function (d, i) {
             return d[2] === name;
         }).attr('fill-opacity', 0.6)
-            .attr('fill', "#800000");
+            .attr('fill', color);
     }
 
     function filterCircleByTime(firstYear, SecondYear, color) {
@@ -1000,8 +1006,8 @@ function plot_it() {
             .attr('fill', lightYellowish);
         let selectedCircles = zoomZone.selectAll('circle').filter(function (d, i) {
             return d[1] <= SecondYear && d[1] >= firstYear;
-        }).attr('fill-opacity', 0.6)
-            .attr('fill', "#800000");
+        }).attr('fill-opacity', 0.4)
+            .attr('fill', darkmagenta);
     }
 
     // reset coloring
