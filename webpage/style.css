@@ -1,0 +1,97 @@
+.state:hover {
+    stroke: #FF4500;
+    cursor: pointer;
+}
+
+.state {
+    /*stroke: #fff;*/
+    /*stroke-linejoin: round;*/
+}
+/* On mouse hover, lighten state color */
+path:hover {
+    fill-opacity: .8;
+}
+
+.detailedButton {
+    cursor: pointer;
+    /*fade - in behavior*/
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.7s;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+/* for tooltip */
+/* Reference: http://bl.ocks.org/NPashaP/a74faf20b492ad377312 */
+
+#tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 1px;
+    border-radius: 2px;
+    pointer-events: none;
+}
+#tooltip h4{
+    margin:0;
+    font-size:14px;
+}
+#tooltip{
+    background:rgba(0,0,0,0.9);
+    border:1px solid grey;
+    border-radius:5px;
+    font-size:12px;
+    width:auto;
+    padding:4px;
+    color:white;
+    opacity:0;
+}
+#tooltip table{
+    table-layout:fixed;
+}
+#tooltip tr td{
+    padding:0;
+    margin:0;
+}
+#tooltip tr td:nth-child(1){
+    width:50px;
+}
+#tooltip tr td:nth-child(2){
+    text-align:center;
+}
+
+/* additional styling */
+.scale line,
+.scale path {
+    fill: none;
+    stroke: #aaa;
+    shape-rendering: crispEdges;
+}
+
+/*text {*/
+    /*text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;*/
+/*}*/
+
+.fade-in {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.7s;
+}
+
+.scale text {
+    font-size: 8px;
+}
+
+h3{
+    text-align: center;
+}

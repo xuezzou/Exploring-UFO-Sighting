@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset='utf-8'>
+		<title>Final Project UFO sightseeing in the U.S visualization</title>
+		<script type='text/javascript' src='webpage/d3.js'></script>
+		<link rel="stylesheet" type="text/css" href="webpage/style.css">
+	</head>
+	<body>
+
+	<h3>Visualization of <a href = "http://www.nuforc.org/">UFO Reports</a> from 1910 - 2014 in States</h3>
+	<!--<script type='text/javascript' src='webpage/topojson.v2.min.js'></script>-->
+	<script type='text/javascript' src='webpage/ufo_visualizations.js'></script>
+	<script type='text/javascript'>
+		d3.csv('data/ufo_data_cleaned.csv').then(function(data1){
+			d3.csv('data/air_base_pos.csv').then(function(data2)  {
+				d3.json('webpage/us-geo.json').then(function(data3){		
+			
+					ufo_data = data1;
+					air_base_data = data2;
+					map_data = data3;
+						
+					plot_it();
+				})
+			})
+		})
+		
+	</script>
+	</body>
+</html>
