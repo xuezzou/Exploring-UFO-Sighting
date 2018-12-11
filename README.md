@@ -11,6 +11,7 @@ h report, which would help us gain better insights into the data.
 
 #### Specification
 
+We used d3.js mainly to visualize the data and perform related interaction.
 File `documentation` includes the proposal, process book and other related writing files of the project; `data` includes related ufo sighting data before cleaning and after cleaning, and also the python script used to clean up the data; `webpage` contains the javascript and css codes (also the us-geo.json used for geometric visualization, which is the backbone of our project; and `index.html` is the entry to the visualization and interaction.
 
 #### Running
