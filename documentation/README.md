@@ -1,6 +1,6 @@
-### Process Book
+## Process Book
 
-#### Exploratory Data Analysis
+### Exploratory Data Analysis
 
 
 **Stage 1**: We used a USA geo-map to visually look at our data since it has *latitude* and *longitude* attribute. By looking at the distribution of data on the map, we found that in general, eastern states have more reports compared with western states. However, California has the most reported counts.
@@ -15,7 +15,7 @@
 
 **Stages 3**: By exploring our current visualization, we can find that different states have very different UFO report distribution, both in spatial space and some other aspects. We hypothesize that most UFO reported might just be *military planes* that have unusual shapes or lighting patterns. To verify our assumption, we added some major US air force bases to our map. From the visualization we can see that some dense report areas such as southern California, Dallas area, northeastern areas, do have air bases around them so our explanation might be correct.
 
-#### Design Evolution
+### Design Evolution
 
 We considered using line chart, bar chart, map, polar area chart, word cloud. We eventually chose *line chart*, *bar chart* and *map*. Because we are presenting geospatial data so the map is the most powerful tool for showing where those report data are. We chose line chart for the reports counts during each year because line chart is a good choice for presenting potential trends, especially with time as one dimension. We chose bar chart for both UFO shapes and durations. UFO shapes are discrete categories and bar chart is good at plotting category data. 
 
@@ -24,17 +24,17 @@ The **color** on the map represents the counts of the states. Here we embraced t
 For **interaction**, we provided the user with an overview of the whole U.S map and the user can zoom in to see details on demand. We also have some buttons as scented widgets so the users can choose to see data from certain years or has certain shapes.
 
 
-#### Analysis
+### Analysis
 
 Please also refer to the answers to question 1 for what we learnt from the data. We found both the geospatial patterns and year trend, shape spotted trend in our visualization. I think our visualization is great in presenting both geospatial attribute, year attribute, shape attribute and duration attribute. However, if we had time to implement **word cloud** in each state for the comments of the reports, some more interesting insights might be seen.
 
 
-#### Overview and Motivation
+### Overview and Motivation
 
 
 This project is about visualizing UFO sightseeing report. It aims at finding some potential trends, patterns or interesting facts behind UFO sightseeing. The initial motivation was from the mysterious nature of UFO. Since not much has been known to UFO and it remains a debating topic, we thought maybe visualization might serve as a good tool to enable us to further investigating it, rather than using some traditional mathematical analysis.
 
-#### Related Work
+### Related Work
 
 We found some d3.js online examples really useful. 
 Here are the references we used for plotting the map data,
@@ -54,7 +54,7 @@ Furthermore, here are some discussions of the dataset from Kaggle, which may als
 
 For the design and layout of the five Sheet Methodology in our proposal, we use http://fds.design/index for reference.
 
-#### Questions
+### Questions
 
 In our proposal, we outlined four main questions: 
 - what areas of the state or country are most likely to have UFO sightings? 
@@ -66,7 +66,7 @@ Over time, we are more focused on the trend based on year, shape and duration by
 
 However, to investigate the potential correlation between government landmarks and our data, we introduced new data set consisted of geometric attributes (longitude, latitude) of some randomly chosen U.S. Air Force Bases.
 
-#### Data
+### Data
 
 **[Source](https://www.kaggle.com/NUFORC/ufo-sightings)**: (Link to the Kaggle Dataset) The data contains over 80, 000 reports of UFO sightings over the last century from 1910 to 2014. Since the reports date back to the early 20th century, some older data might be obscured. Data contains city, state, time, description, and duration of each sighting.
 
@@ -79,7 +79,7 @@ The main scraping was done by [Sigmond Axel on his github project](https://www.k
 In the Python Script, we translated the states attributes of the data items to full state name instead of abbreviation in order to coordinate with the geo projector. Moreover, we only kept the attribute year (split from time attribute in the original data), state, country, shape, duration, latitude, and longitude. We further filter out items with no state. items without U.S., and items without shape specified.
 
 
-#### Implementation
+### Implementation
 
 **Interaction: “Overview first”**
  
