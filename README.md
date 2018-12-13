@@ -16,7 +16,7 @@ File `documentation` includes the proposal, process book and other related writi
 
 #### Running
 
-The data visualization is accessed through the broswer. To run, cloning the entire project and run `python -m SimpleHTTPServer` in the console in the root directory of the project. Then, go to the following url: [http://localhost:8000/assignment0](http://localhost:8000/assignment0) would load the visualization.
+The data visualization is accessed through the broswer. To run, cloning the entire project and run `python -m SimpleHTTPServer` in the console in the root directory of the project. Then, go to the following url: [http://localhost:8000/](http://localhost:8000/) would load the visualization.
 
 #### Illustration
 - Main view
