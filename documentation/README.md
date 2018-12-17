@@ -5,11 +5,11 @@
 
 **Stage 1**: We used a USA geo-map to visually look at our data since it has *latitude* and *longitude* attribute. By looking at the distribution of data on the map, we found that in general, eastern states have more reports compared with western states. However, California has the most reported counts.
 
-**Stage 2**: Since the dataset contains attributes such as reported date, UFO shape or sightseeing duration, but our current geo-map visualization does not include this, we wanted to add some other views to our visualization. Eventually we chose line chart for displaying reported year information for selected states, bar chart for visualizing UFO shape and duration for selected states. By examining these charts, we found: 
+**Stage 2**: Since the dataset contains attributes such as reported date, UFO shape or sighting duration, but our current geo-map visualization does not include this, we wanted to add some other views to our visualization. Eventually we chose line chart for displaying reported year information for selected states, bar chart for visualizing UFO shape and duration for selected states. By examining these charts, we found:
 
 - Most reports appeared after 2000. One possible guess is that with the advent of various kinds of digital devices and social media, it becomes easier for spotters to report their sightseeing. 
 - Most UFO shapes reported are just light. We propose that it might be caused by the factor that light is the easiest to describe during report when the spotter cannot really see the actual shape, or they might just mistake any bright flying object such as airplanes, satellites, comets for UFO. 
-- Most sightseeing duration are only a few to a hundred or so seconds. It is rare to see a report even more than 10 mins (600 seconds). So we speculate that these UFO might move pretty fast. Or if the UFO is stationary, the time is probably too short for the spotter to go closer to take a look. 
+- Most sighting duration are only a few to a hundred or so seconds. It is rare to see a report even more than 10 mins (600 seconds). So we speculate that these UFO might move pretty fast. Or if the UFO is stationary, the time is probably too short for the spotter to go closer to take a look.
 
 **Update**: We enabled multiple states being selected to be added to subplots. This made comparison between states possible. By analyzing statistics among different states, we found *California* seems to be a favored place for UFO visiting. Its visualization on either year line chart, or shape bar chart and duration bar chart are significant outnumbers any other states.
 
@@ -32,7 +32,7 @@ Please also refer to the answers to question 1 for what we learnt from the data.
 ### Overview and Motivation
 
 
-This project is about visualizing UFO sightseeing report. It aims at finding some potential trends, patterns or interesting facts behind UFO sightseeing. The initial motivation was from the mysterious nature of UFO. Since not much has been known to UFO and it remains a debating topic, we thought maybe visualization might serve as a good tool to enable us to further investigating it, rather than using some traditional mathematical analysis.
+This project is about visualizing UFO sighting report. It aims at finding some potential trends, patterns or interesting facts behind UFO sightseeing. The initial motivation was from the mysterious nature of UFO. Since not much has been known to UFO and it remains a debating topic, we thought maybe visualization might serve as a good tool to enable us to further investigating it, rather than using some traditional mathematical analysis.
 
 ### Related Work
 
