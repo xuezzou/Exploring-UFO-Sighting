@@ -1,22 +1,22 @@
 ## Vis-Project-fall-2018
-Vanderbilt *CS3891* *Introduction to Visualization* Final Project, fall 2018
+> Vanderbilt *CS3891* *Introduction to Visualization* Final Project, fall 2018
 
-#### Description 
+### Description
 
 ---
 Using the [UFO Sighting data](https://www.kaggle.com/NUFORC/ufo-sightings) from [National UFO Reporting Center](http://www.nuforc.org/), which reports unidentified flying object over the last century, we aims to investigate questions such as where or when most UFO sightseeing occurs, identify patterns or correlations across *geo* and *time* information, and, possibly, derives some mysterious theories related to extra-terrestrials. We would also consider the *shape* and appeared *duration* of the alien reported. An interesting data attribute would be the detailed *comment* of each report, which would help us gain better insights into the data.
 
 ---
 
-#### Overview
+### Overview
 
 We used **[d3.js](https://d3js.org/)** mainly to visualize the data and perform related interaction.
 File [`documentation`](/documentation) includes the proposal, process book and other related writing files of the project; [`data`](/data) includes related ufo sighting data before cleaning and after cleaning, and also the python script used to clean up the data; [`webpage`](/webpage) contains the javascript and css codes (also the us-geo.json used for geometric visualization, which is the backbone of our project; and `index.html` is the entry to the visualization and interaction.
 
-#### Running
+### Running
 
 The data visualization is accessed through the broswer. To run, cloning the entire project and run `python -m SimpleHTTPServer` in the console in the root directory of the project. Then, go to the following url: [http://localhost:8000/](http://localhost:8000/) would load the visualization.
-
+---
 ## Process Book
 
 ### Exploratory Data Analysis
