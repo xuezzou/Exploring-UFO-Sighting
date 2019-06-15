@@ -1,5 +1,7 @@
 ## Vis-Project-fall-2018
 > Vanderbilt *CS3891* *Introduction to Visualization* Final Project, fall 2018
+> 
+> Huge thanks to Professor *Matthew Berger*
 
 ### Description
 
@@ -138,4 +140,33 @@ The axes in the timeplot is also zoomable.
 - The plot could apply more effective color channel besides linear interpolation. 
 - Area or population of a state could be considered when we visualize the count. 
 - The plot could contain more information in the tooltip. 
-- Last but not least, we could apply data kernel density estimation to mitigate cluster.
+- Last but not least, we could apply **data kernel density** estimation to mitigate cluster.
+
+### Feedback and Suggestions
+- color
+    - choice of **color** for the *individual* reports has bad contrast with the sequential color map used in the choropleth.
+- Other Visual Channels: **density** for the main scatterplot
+    - modify code with a trivial (i.e. _bad_) way of estimating density:
+        - discretize the geographic space into a uniform 2D grid, and for each grid cell, count the number of reports that are located within the cell. 
+        - then apply a (log scale) color map (with a different chromaticity than the choropleth)
+    - before and after accounting for density
+        - much easier to see "hot spots"
+        <img src="sample_images/no-density.png" width="600" />
+        <img src="sample_images/density.png" width="600" />
+- Effectiveness of Multiple Views
+    - grouped bar charts, compared to stacked bar charts, make comparisons easier
+    - the _combination_ of Shapes and Durations
+        - potentially, a **heatmap** - with small multiples to compare across states - or as some type of grouped bar chart, would have been a nice way to explore different aspects of the data.
+- Spatial Layout
+    - place the time-series plot *below* the map
+- interaction
+    - Good
+        - clicking on states to compare them
+        - camera interaction with the map
+        - interaction with the time-series
+        - the different means of filtering
+    - Bad: tighter coordination between map and subplots
+        - enabled the user to inspect time intervals of interest, and then _select_ time intervals to then update the map (beit the choropleth or reports).
+        - Clicking on bars in the Shape and Duration *subplots* would have made an effective mechanism to filter reports on the map. 
+            - The scatterplot is cluttered enough to begin with, and so this means of filtering via the other subplots would have been a nice way to interact with the scatterplot.
+        - Moreover, it would be nice to have some way of showing *what states* are selected on the map, rather than just the legend on the upper right.
