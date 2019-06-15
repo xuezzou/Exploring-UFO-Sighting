@@ -2,6 +2,22 @@
 > Vanderbilt *CS3891* *Introduction to Visualization* Final Project, fall 2018
 > 
 > Huge thanks to Professor *Matthew Berger*
+> 
+
+#### Contents
+- [Description](#description)
+- [Overview](#overview)
+- [Running](#running)
+- [Process Book](#process-book)
+    - [Exploratory Data Analysis](#exploratory-data-analysis)
+    - [Design Evolution](#design-evolution)
+    - [Analysis](#analysis)
+    - [Overview and Motivation](#overview-and-motivation)
+    - [Related Work](#related-work)
+    - [questions](#questions)
+    - [Data](#data)
+    - [Implementation](#implementation)
+- [Feedback and Suggestions](#feedback-and-suggestions)
 
 ### Description
 
@@ -141,6 +157,8 @@ The axes in the timeplot is also zoomable.
 - Area or population of a state could be considered when we visualize the count. 
 - The plot could contain more information in the tooltip. 
 - Last but not least, we could apply **data kernel density** estimation to mitigate cluster.
+
+---
 
 ### Feedback and Suggestions
 - Color
