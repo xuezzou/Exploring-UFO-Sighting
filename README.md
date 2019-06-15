@@ -143,7 +143,7 @@ The axes in the timeplot is also zoomable.
 - Last but not least, we could apply **data kernel density** estimation to mitigate cluster.
 
 ### Feedback and Suggestions
-- color
+- Color
     - choice of **color** for the *individual* reports has bad contrast with the sequential color map used in the choropleth.
 - Other Visual Channels: **density** for the main scatterplot
     - modify code with a trivial (i.e. _bad_) way of estimating density:
@@ -159,13 +159,13 @@ The axes in the timeplot is also zoomable.
         - potentially, a **heatmap** - with small multiples to compare across states - or as some type of grouped bar chart, would have been a nice way to explore different aspects of the data.
 - Spatial Layout
     - place the time-series plot *below* the map
-- interaction
+- Interaction
     - Good
         - clicking on states to compare them
         - camera interaction with the map
         - interaction with the time-series
         - the different means of filtering
-    - Bad: tighter coordination between map and subplots
+    - Bad: loose coordination between map and subplots
         - enabled the user to inspect time intervals of interest, and then _select_ time intervals to then update the map (beit the choropleth or reports).
         - Clicking on bars in the Shape and Duration *subplots* would have made an effective mechanism to filter reports on the map. 
             - The scatterplot is cluttered enough to begin with, and so this means of filtering via the other subplots would have been a nice way to interact with the scatterplot.
